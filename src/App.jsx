@@ -1,27 +1,63 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import { createTheme } from "@mui/material/styles";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import TimelineIcon from "@mui/icons-material/Timeline";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { Outlet } from "react-router-dom";
-import { ShoppingBasket, LayoutDashboard } from "lucide-react";
+
+import {
+  ShoppingBasket,
+  LayoutDashboard,
+  SquareStack,
+  MonitorSmartphone,
+  Unplug,
+  Shirt,
+  BriefcaseBusiness,
+  CookingPot,
+} from "lucide-react";
 
 const Navigation = [
   {
     kind: "header",
-    title: "",
+    title: "Main Menu", // ✅ Added a meaningful title
   },
   {
     segment: "",
     title: "Dashboard",
     icon: <LayoutDashboard size={28} color="#c95454" />,
   },
+  {
+    segment: "category",
+    title: "Category",
+    icon: <SquareStack size={28} color="#c95454" />,
+    children: [
+      {
+        segment: "phone",
+        title: "Phone & Accessories",
+        icon: <MonitorSmartphone color="#c95454" />,
+      },
+      {
+        segment: "appliance", // ✅ Fixed capitalization
+        title: "Appliance",
+        icon: <Unplug color="#c95454" />,
+      },
+      {
+        segment: "clothes",
+        title: "Clothes",
+        icon: <Shirt color="#c95454" />,
+      },
+      {
+        segment: "bags",
+        title: "Bags",
+        icon: <BriefcaseBusiness color="#c95454" />, // ✅ Fixed typo (icons -> icon)
+      },
+      {
+        segment: "home",
+        title: "Home & Kitchen",
+        icon: <CookingPot color="#c95454" />,
+      },
+    ],
+  },
 ];
-function DashboardLayoutAccount(props) {
-  const { window } = props;
 
+function App() {
   const [session, setSession] = React.useState({
     user: {
       name: "Bharat Kashyap",
@@ -46,15 +82,11 @@ function DashboardLayoutAccount(props) {
       },
     };
   }, []);
-}
-function App() {
   return (
     <AppProvider
-      branding={{
-        title: "Maseno Mart",
-        logo: <ShoppingBasket size={32} color="#c95454" />,
-      }}
       navigation={Navigation}
+      session={session}
+      authentication={authentication}
     >
       <Outlet />
     </AppProvider>
