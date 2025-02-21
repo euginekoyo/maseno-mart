@@ -6,7 +6,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import TimelineIcon from "@mui/icons-material/Timeline";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { Outlet } from "react-router-dom";
-import { ShoppingBasket,LayoutDashboard } from "lucide-react";
+import { ShoppingBasket, LayoutDashboard } from "lucide-react";
 
 const Navigation = [
   {
@@ -16,9 +16,37 @@ const Navigation = [
   {
     segment: "",
     title: "Dashboard",
-    icon:<LayoutDashboard size={28} color="#c95454" />,
+    icon: <LayoutDashboard size={28} color="#c95454" />,
   },
 ];
+function DashboardLayoutAccount(props) {
+  const { window } = props;
+
+  const [session, setSession] = React.useState({
+    user: {
+      name: "Bharat Kashyap",
+      email: "bharatkashyap@outlook.com",
+      image: "https://avatars.githubusercontent.com/u/19550456",
+    },
+  });
+
+  const authentication = React.useMemo(() => {
+    return {
+      signIn: () => {
+        setSession({
+          user: {
+            name: "Bharat Kashyap",
+            email: "bharatkashyap@outlook.com",
+            image: "https://avatars.githubusercontent.com/u/19550456",
+          },
+        });
+      },
+      signOut: () => {
+        setSession(null);
+      },
+    };
+  }, []);
+}
 function App() {
   return (
     <AppProvider
