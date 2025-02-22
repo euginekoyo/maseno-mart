@@ -9,6 +9,8 @@ import SignUp from "./Pages/SignUp.jsx";
 import Dashboard from "./Pages/Dashboard/Dashboard.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
 import Category from "./Pages/Category.jsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const router = createBrowserRouter([
   {

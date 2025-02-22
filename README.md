@@ -14,3 +14,4 @@ Currently, two official plugins are available:
 npm i react-router-dom axios
 <!-- react icons -->
 npm i lucide-react
+npm install react-bootstrap bootstrap
