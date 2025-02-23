@@ -13,18 +13,26 @@ import {
 import CloudCircleIcon from "@mui/icons-material/CloudCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SearchIcon from "@mui/icons-material/Search";
-import { ShoppingBasket } from "lucide-react";
+import {
+  Facebook,
+  FacebookIcon,
+  GithubIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  ShoppingBasket,
+} from "lucide-react";
+import { SignInButton } from "@toolpad/core/Account";
 function Layout() {
   function ToolbarActionsSearch() {
     return (
-      <Stack direction="row">
-        <Tooltip title="Search" enterDelay={1000}>
-          <div>
+      <Stack direction={"row"} sx={{ mr: { xs: -4 }, my: 4 }}>
+        <Tooltip title="Search" sxenterDelay={1000}>
+          <div style={{ marginTop: 12 }}>
             <IconButton
               type="button"
               aria-label="search"
               sx={{
-                display: { xs: "inline", md: "none" },
+                display: { xs: "inline", md: "none", borderRadius: 4 },
               }}
             >
               <SearchIcon />
@@ -35,19 +43,44 @@ function Layout() {
           label="Search"
           variant="outlined"
           size="small"
+          
           slotProps={{
             input: {
               endAdornment: (
-                <IconButton type="button" aria-label="search" size="small">
+                <IconButton
+                  type="button"
+                  aria-label="search"
+                  size="small"
+                  sx={{ borderRadius: 2 }}
+                >
                   <SearchIcon />
                 </IconButton>
               ),
               sx: { pr: 0.5 },
             },
           }}
-          sx={{ display: { xs: "none", md: "inline-block" }, mr: 1 }}
+          sx={{
+            display: { xs: "none", md: "inline-block" },
+            mr: { lg: 10, xs: 0.1 },mt:{lg:2}
+          }}
         />
-        <ThemeSwitcher />
+        <IconButton
+          sx={{
+            ml: { lg: 2, xs: 0.5 },
+            mr: { lg: 2, xs: 0.1 },
+            my: 2,
+            borderRadius: 2,
+            height: 35,
+            width: { xs: "4rem" },
+            bgcolor: "black",
+            color: "white",
+          }}
+        >
+          <SignInButton color="black" />
+        </IconButton>
+        <div style={{ marginTop: 12, marginRight: {lg:2,xs:-4} }}>
+          <ThemeSwitcher />
+        </div>
       </Stack>
     );
   }
@@ -56,11 +89,58 @@ function Layout() {
     return (
       <Typography
         variant="caption"
-        sx={{ m: 1, whiteSpace: "nowrap", overflow: "hidden" }}
+        sx={{ whiteSpace: "nowrap", overflow: "hidden" }}
       >
-        {mini
-          ? "© MasenoMart"
-          : `© ${new Date().getFullYear()} Made with love by devs`}
+        {mini ? (
+          <>
+            <Stack direction={"column"} spacing={0.5} mb={4}>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <FacebookIcon />
+              </IconButton>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <InstagramIcon />
+              </IconButton>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <GithubIcon />
+              </IconButton>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <LinkedinIcon />
+              </IconButton>
+            </Stack>
+            <Stack direction={"column"} ml={1} mb={2}>
+              <Typography sx={{ fontSize: { sm: "0.95rem", lg: "0.75rem" } }}>
+                © MMart
+              </Typography>
+              <Typography
+                ml={1.5}
+                sx={{ fontSize: { sm: "0.95rem", lg: "0.75rem" } }}
+              >
+                {new Date().getFullYear()}
+              </Typography>
+            </Stack>
+          </>
+        ) : (
+          <>
+            <Stack direction={"column"} mx={8} mb={1}>
+              <Typography>Made with love by devs</Typography>
+              <Typography mx={6}>© {new Date().getFullYear()}</Typography>
+            </Stack>
+            <Stack direction={"row"} spacing={1} mx={6} mb={4}>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <FacebookIcon />
+              </IconButton>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <InstagramIcon />
+              </IconButton>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <GithubIcon />
+              </IconButton>
+              <IconButton sx={{ borderRadius: 2 }}>
+                <LinkedinIcon />
+              </IconButton>
+            </Stack>
+          </>
+        )}
       </Typography>
     );
   }
@@ -72,7 +152,9 @@ function Layout() {
     return (
       <Stack direction="row" alignItems="center" spacing={1}>
         {/* <ShoppingBasket size={32} color="#c95454" /> */}
-        <Typography variant="h5">MasenoMart</Typography>
+        <Typography sx={{ fontSize: { xs: "0.95rem",lg:"1.5 rem" } }}>
+          MasenoMart
+        </Typography>
         <Tooltip title="Connected to production">
           <CheckCircleIcon color="primary" fontSize="small" />
         </Tooltip>
