@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Category() {
+function Products() {
   return (
     <div>Category</div>
   )
 }
 
-export default Category
+export default Products

@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import {
   Stack,
   Typography,
-  Chip,
   Tooltip,
   IconButton,
   TextField,
@@ -13,32 +12,17 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import {
-  Facebook,
   FacebookIcon,
-  GithubIcon,
   InstagramIcon,
-  LinkedinIcon,
+  LogIn,
 } from "lucide-react";
-import { SignInButton } from "@toolpad/core/Account";
 import GoogleIcon from "@mui/icons-material/Google";
 import XIcon from "@mui/icons-material/X";
 function Layout() {
   function ToolbarActionsSearch() {
     return (
       <Stack direction={"row"} sx={{ mr: { xs: -4 }, my: 4 }}>
-        <Tooltip title="Search" sxenterDelay={1000}>
-          <div style={{ marginTop: 12 }}>
-            <IconButton
-              type="button"
-              aria-label="search"
-              sx={{
-                display: { xs: "inline", md: "none", borderRadius: 4 },
-              }}
-            >
-              <SearchIcon />
-            </IconButton>
-          </div>
-        </Tooltip>
+        
         <TextField
           label="Search"
           variant="outlined"
@@ -71,12 +55,13 @@ function Layout() {
             my: 2,
             borderRadius: 2,
             height: 35,
-            width: { xs: "4rem" },
+            width: { xs: "6rem" },
             bgcolor: "black",
             color: "white",
           }}
         >
-          <SignInButton color="black" />
+          <Typography mx={1}>Login</Typography>
+          <LogIn size={15} />
         </IconButton>
         <div style={{ marginTop: 12, marginRight: { lg: 2, xs: -4 } }}>
           <ThemeSwitcher />

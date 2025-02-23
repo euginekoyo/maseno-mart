@@ -10,8 +10,8 @@ export default function FilterHeader1() {
     <Box
       component="section"
       sx={{
-        ml: { lg: 40 },
-
+        ml: { lg: 30, md: 30 },
+        mt: -2,
         bgcolor: "background.paper",
         boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
       }}

@@ -11,14 +11,16 @@ import {
   BriefcaseBusiness,
   CookingPot,
   Plus,
+  Pickaxe,
   Footprints,
+  Aperture,
+  Unlink,
+  Gamepad2,
+  Bike,
+  Computer,
+  ArrowDownAZ,
 } from "lucide-react";
-
 const Navigation = [
-  {
-    kind: "header",
-    title: "Main Menu", // ✅ Added a meaningful title
-  },
   {
     segment: "",
     title: "Dashboard",
@@ -26,11 +28,17 @@ const Navigation = [
     path: "/",
   },
   {
-    segment: "category",
-    title: "Category",
+    segment: "products",
+    title: "Products",
     icon: <SquareStack size={28} color="#c95454" />,
-    path: "/categories",
+    path: "/products",
     children: [
+      {
+        segment: "all",
+        title: "All",
+        icon: <ArrowDownAZ color="#c95454" />,
+        path: "/products",
+      },
       {
         segment: "phone",
         title: "Phone & Accessories",
@@ -66,6 +74,50 @@ const Navigation = [
         title: "Shoes",
         icon: <Footprints color="#c95454" />,
         path: "/shoes",
+      },
+    ],
+  },
+  {
+    segment: "services",
+    title: "Services",
+    icon: <Pickaxe size={28} color="#c95454" />,
+    path: "./services",
+    children: [
+      {
+        segment: "allServices",
+        title: "All",
+        icon: <ArrowDownAZ color="#c95454" />,
+        path: "/services",
+      },
+      {
+        segment: "photography",
+        title: "photography",
+        icon: <Aperture color="#c95454" />,
+        path: "/photography",
+      },
+      {
+        segment: "HairDesign",
+        title: "HairDesign",
+        icon: <Unlink color="#c95454" />,
+        path: "/hairdesign",
+      },
+      {
+        segment: "Gaming",
+        title: "Gaming",
+        icon: <Gamepad2 color="#c95454" />,
+        path: "/gaming",
+      },
+      {
+        segment: "Bikehire",
+        title: "Bikehire",
+        icon: <Bike color="#c95454" />,
+        path: "/Bikehire",
+      },
+      {
+        segment: "CyberServices",
+        title: "CyberService",
+        icon: <Computer color="#c95454" />,
+        path: "/cyberService",
       },
     ],
   },
