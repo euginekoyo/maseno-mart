@@ -1,7 +1,7 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 export default function FilterHeader1() {
   const [value, setValue] = React.useState(0);
@@ -10,9 +10,10 @@ export default function FilterHeader1() {
     <Box
       component="section"
       sx={{
-        width: '100%',
-        bgcolor: 'background.paper',
-        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+        ml: { lg: 40 },
+
+        bgcolor: "background.paper",
+        boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
       }}
     >
       <Tabs
@@ -24,15 +25,15 @@ export default function FilterHeader1() {
         indicatorColor="primary"
         textColor="primary"
         sx={{
-          '& .MuiTab-root': {
-            fontSize: '13px', // Slightly smaller
-            fontWeight: '500', // Medium weight
-            textTransform: 'none',
-            minWidth: 'auto', // Removes extra width
-            padding: '6px 12px', // Reduces inner spacing
+          "& .MuiTab-root": {
+            fontSize: "13px", // Slightly smaller
+            fontWeight: "500", // Medium weight
+            textTransform: "none",
+            minWidth: "auto", // Removes extra width
+            padding: "6px 12px", // Reduces inner spacing
           },
-          '& .MuiTabs-flexContainer': {
-            gap: '4px', // Reduces space between tabs
+          "& .MuiTabs-flexContainer": {
+            gap: "4px", // Reduces space between tabs
           },
         }}
       >
