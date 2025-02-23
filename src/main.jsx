@@ -9,12 +9,9 @@ import SignUp from "./Pages/SignUp.jsx";
 import Dashboard from "./Pages/Dashboard/Dashboard.jsx";
 import AdminDashboard from "./Pages/AdminDashboard.jsx";
 import Category from "./Pages/Category.jsx";
-<<<<<<< HEAD
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-=======
 import Page404 from "./Pages/404.jsx";
->>>>>>> 84299b7 (added Login,Signup & 404 pages)
 
 const router = createBrowserRouter([
   {

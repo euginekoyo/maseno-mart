@@ -10,7 +10,6 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import CloudCircleIcon from "@mui/icons-material/CloudCircle";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import {
@@ -19,9 +18,10 @@ import {
   GithubIcon,
   InstagramIcon,
   LinkedinIcon,
-  ShoppingBasket,
 } from "lucide-react";
 import { SignInButton } from "@toolpad/core/Account";
+import GoogleIcon from "@mui/icons-material/Google";
+import XIcon from "@mui/icons-material/X";
 function Layout() {
   function ToolbarActionsSearch() {
     return (
@@ -43,7 +43,6 @@ function Layout() {
           label="Search"
           variant="outlined"
           size="small"
-          
           slotProps={{
             input: {
               endAdornment: (
@@ -61,7 +60,8 @@ function Layout() {
           }}
           sx={{
             display: { xs: "none", md: "inline-block" },
-            mr: { lg: 10, xs: 0.1 },mt:{lg:2}
+            mr: { lg: 10, xs: 0.1 },
+            mt: { lg: 2 },
           }}
         />
         <IconButton
@@ -78,7 +78,7 @@ function Layout() {
         >
           <SignInButton color="black" />
         </IconButton>
-        <div style={{ marginTop: 12, marginRight: {lg:2,xs:-4} }}>
+        <div style={{ marginTop: 12, marginRight: { lg: 2, xs: -4 } }}>
           <ThemeSwitcher />
         </div>
       </Stack>
@@ -98,13 +98,13 @@ function Layout() {
                 <FacebookIcon />
               </IconButton>
               <IconButton sx={{ borderRadius: 2 }}>
+                <GoogleIcon />
+              </IconButton>
+              <IconButton sx={{ borderRadius: 2 }}>
                 <InstagramIcon />
               </IconButton>
               <IconButton sx={{ borderRadius: 2 }}>
-                <GithubIcon />
-              </IconButton>
-              <IconButton sx={{ borderRadius: 2 }}>
-                <LinkedinIcon />
+                <XIcon />
               </IconButton>
             </Stack>
             <Stack direction={"column"} ml={1} mb={2}>
@@ -133,10 +133,10 @@ function Layout() {
                 <InstagramIcon />
               </IconButton>
               <IconButton sx={{ borderRadius: 2 }}>
-                <GithubIcon />
+                <GoogleIcon />
               </IconButton>
               <IconButton sx={{ borderRadius: 2 }}>
-                <LinkedinIcon />
+                <XIcon />
               </IconButton>
             </Stack>
           </>
@@ -152,7 +152,7 @@ function Layout() {
     return (
       <Stack direction="row" alignItems="center" spacing={1}>
         {/* <ShoppingBasket size={32} color="#c95454" /> */}
-        <Typography sx={{ fontSize: { xs: "0.95rem",lg:"1.5 rem" } }}>
+        <Typography sx={{ fontSize: { xs: "0.95rem", lg: "1.5 rem" } }}>
           MasenoMart
         </Typography>
         <Tooltip title="Connected to production">

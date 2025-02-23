@@ -18,6 +18,8 @@ import {
   ShoppingBasket,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import GoogleIcon from "@mui/icons-material/Google";
+import XIcon from "@mui/icons-material/X";
 function Login() {
   return (
     <>
@@ -77,7 +79,7 @@ function Login() {
               sx={{ borderRadius: 4, width: { xs: 80, lg: 100 } }}
               disabled
             >
-              <GithubIcon />
+              <GoogleIcon />
             </IconButton>
           </Tooltip>
         </Box>
@@ -113,7 +115,7 @@ function Login() {
               sx={{ borderRadius: 4, width: { xs: 80, lg: 100 } }}
               disabled
             >
-              <LinkedinIcon />
+              <XIcon />{" "}
             </IconButton>
           </Tooltip>
         </Box>
@@ -170,7 +172,7 @@ function Login() {
             alignItems: "center",
           }}
         >
-          <Checkbox size="small"/>
+          <Checkbox size="small" />
           <Typography sx={{ fontSize: { xs: "0.85rem" } }}>
             Remember me
           </Typography>

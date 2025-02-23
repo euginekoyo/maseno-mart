@@ -17,7 +17,8 @@ import {
   ShoppingBasket,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { select } from "three/tsl";
+import GoogleIcon from "@mui/icons-material/Google";
+import XIcon from "@mui/icons-material/X";
 function SignUp() {
   return (
     <>
@@ -201,7 +202,7 @@ function SignUp() {
               sx={{ borderRadius: 4, width: { xs: 80, lg: 100 } }}
               disabled
             >
-              <GithubIcon />
+              <GoogleIcon />
             </IconButton>
           </Tooltip>
         </Box>
@@ -237,7 +238,7 @@ function SignUp() {
               sx={{ borderRadius: 4, width: { xs: 80, lg: 100 } }}
               disabled
             >
-              <LinkedinIcon />
+              <XIcon />
             </IconButton>
           </Tooltip>
         </Box>
