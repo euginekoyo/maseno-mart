@@ -18,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function RowAndColumnSpacing() {
   return (
     <Box sx={{ width: '100%' }}>
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 2 , lg: 2 }}>
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 1, md: 2 , lg: 2 }}>
         <Grid size={{ xs: 6, sm: 6, md: 3, xl: 2 }}>
           <RecipeReviewCard />
         </Grid >
