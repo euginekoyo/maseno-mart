@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { DashboardLayout, ThemeSwitcher } from "@toolpad/core/DashboardLayout";
 import PropTypes from "prop-types";
 import {
@@ -48,6 +48,7 @@ function Layout() {
             mt: { lg: 2 },
           }}
         />
+        <Link to={"/login"}>
         <IconButton
           sx={{
             ml: { lg: 2, xs: 0.5 },
@@ -63,6 +64,7 @@ function Layout() {
           <Typography mx={1}>Login</Typography>
           <LogIn size={15} />
         </IconButton>
+        </Link>
         <div style={{ marginTop: 12, marginRight: { lg: 2, xs: -4 } }}>
           <ThemeSwitcher />
         </div>

@@ -10,16 +10,59 @@ import {
 } from "@mui/material";
 import {
   Facebook,
-  GithubIcon,
+  Smile,
   InstagramIcon,
-  LinkedinIcon,
   LogIn,
   ShoppingBasket,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import XIcon from "@mui/icons-material/X";
+import { signupUser } from "../api/api";
+import Swal from "sweetalert2";
 function SignUp() {
+  const [formData, setFormData] = React.useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "",
+  });
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await signupUser(formData);
+
+      if (response.status === 200) {
+        navigate("/", {
+          state: {
+            message: `Welcome To Maseno-Mart${(<Smile color="#a9e10e" strokeWidth={3} />)}, ${formData.name}!`,
+            type: "success",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    
+      Swal.fire({
+        toast: true, // Enable toast mode
+        position: "top", // Ensure it's at the top-right
+        icon: "error",
+        title: error.response?.data?.message || "Something went wrong.",
+        showConfirmButton: false,
+        timer: 3000, // Auto-dismiss after 3 seconds
+        timerProgressBar: true,
+        customClass: {
+          popup: "custom-swal-popup", // Custom class for styling
+        },
+      });
+    }
+    
+  };
+
   return (
     <>
       <IconButton
@@ -39,6 +82,8 @@ function SignUp() {
       </IconButton>
       <Box
         container
+        component={"form"}
+        onSubmit={handleSubmit}
         sx={{
           mx: { lg: 55, xs: 2 },
           my: 6,
@@ -62,6 +107,7 @@ function SignUp() {
           <TextField
             label="username"
             name="name"
+            onChange={handleChange}
             fullWidth
             size="small"
             sx={{ fontFamily: "monospace" }}
@@ -73,6 +119,7 @@ function SignUp() {
             label="email"
             name="email"
             fullWidth
+            onChange={handleChange}
             size="small"
             sx={{ fontFamily: "monospace" }}
           />
@@ -81,7 +128,9 @@ function SignUp() {
           <TextField
             label="password"
             name="password"
+            type="password"
             fullWidth
+            onChange={handleChange}
             color="warning"
             size="small"
             sx={{ fontFamily: "monospace" }}
@@ -89,35 +138,20 @@ function SignUp() {
         </Box>
         <Box my={1}>
           <TextField
-            label="Physical location"
-            name="location"
+            label="role"
+            name="role"
             fullWidth
-            size="small"
-            sx={{ fontFamily: "monospace", width: 230 }}
-          ></TextField>
-        </Box>
-        <Box my={1}>
-          <TextField
-            label="phone number"
-            name="phone"
-            fullWidth
+            onChange={handleChange}
+            color="warning"
             size="small"
             sx={{ fontFamily: "monospace" }}
-          />
-        </Box>
-        <Box my={1}>
-          <TextField
-            name="profileImage"
-            type="file"
-            fullWidth
-            size="small"
-            sx={{ fontFamily: "monospace", fontSize: "0.75rem", width: 237 }}
           />
         </Box>
 
         <Box my={2}>
           <IconButton
             sx={{ bgcolor: "black", borderRadius: 2, mx: 8, width: 230 }}
+            type="submit"
           >
             <Typography
               mx={1}
@@ -147,7 +181,7 @@ function SignUp() {
               fontSize: "0.85rem",
             }}
           >
-            Signin
+            login
           </Link>
         </Box>
       </Box>
