@@ -6,7 +6,7 @@ import {
   IconButton,
   TextField,
   Typography,
-  Tooltip,
+  Tooltip,MenuItem, Select, FormControl, InputLabel
 } from "@mui/material";
 import {
   Facebook,
@@ -46,7 +46,7 @@ function SignUp() {
       }
     } catch (error) {
       console.log(error);
-    
+
       Swal.fire({
         toast: true, // Enable toast mode
         position: "top", // Ensure it's at the top-right
@@ -60,7 +60,6 @@ function SignUp() {
         },
       });
     }
-    
   };
 
   return (
@@ -136,17 +135,19 @@ function SignUp() {
             sx={{ fontFamily: "monospace" }}
           />
         </Box>
-        <Box my={1}>
-          <TextField
-            label="role"
+        <FormControl sx={{width:205,mt:.5}}>
+          <InputLabel sx={{fontSize:".85rem"}}>User Role</InputLabel>
+          <Select
             name="role"
-            fullWidth
-            onChange={handleChange}
-            color="warning"
             size="small"
-            sx={{ fontFamily: "monospace" }}
-          />
-        </Box>
+            value={formData.role}
+            onChange={handleChange}
+            required
+          >
+            <MenuItem value="buyer">Buyer</MenuItem>
+            <MenuItem value="seller">Seller</MenuItem>
+          </Select>
+        </FormControl>
 
         <Box my={2}>
           <IconButton

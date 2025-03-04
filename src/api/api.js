@@ -29,21 +29,22 @@ if (token) {
 
 // Auth APIs
 export const signupUser = async (userData) => {
-  const response = await api.post("/signup", userData);
+  const response = await api.post("/auth/signup", userData);
   if (response.data.token) {
-    setAuthToken(response.data.token); // Store token
+    setAuthToken(response.data.token);
   }
   return response;
 };
 export const loginUser = async (credentials) => {
-  const response = await api.post("/login", credentials);
+  const response = await api.post("/auth/login", credentials);
   if (response.data.token) {
-    setAuthToken(response.data.token); // Store token
+    setAuthToken(response.data.token);
   }
   return response;
 };
 
 export const logoutUser = () => setAuthToken(null);
+
 // User APIs
 export const fetchUsers = () => api.get("/users");
 export const updateUser = (userId, userData) =>
@@ -52,8 +53,32 @@ export const deleteUser = (userId) => api.delete(`/users/${userId}`);
 
 // Product APIs
 export const fetchProducts = () => api.get("/products");
-export const createProduct = (productData) =>
-  api.post("/products", productData);
+
+// Updated createProduct function with file upload
+export const createProduct = async (formData) => {
+  try {
+    // Log FormData contents for debugging
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    const response = await api.post("/products", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", {
+      response: error.response?.data,
+      message: error.message,
+      status: error.response?.status,
+    });
+    throw error;
+  }
+};
+
 export const updateProduct = (productId, productData) =>
   api.put(`/products/${productId}`, productData);
 export const deleteProduct = (productId) =>
@@ -61,8 +86,29 @@ export const deleteProduct = (productId) =>
 
 // Service APIs
 export const fetchServices = () => api.get("/services");
-export const createService = (serviceData) =>
-  api.post("/services", serviceData);
+export const createService = async (formData) => {
+  try {
+    // Log FormData contents for debugging
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
+
+    const response = await api.post("/services", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", {
+      response: error.response?.data,
+      message: error.message,
+      status: error.response?.status,
+    });
+    throw error;
+  }
+};
 export const updateService = (serviceId, serviceData) =>
   api.put(`/services/${serviceId}`, serviceData);
 export const deleteService = (serviceId) =>
