@@ -121,12 +121,7 @@ const Navigation = [
       },
     ],
   },
-  {
-    segment: "addProduct",
-    title: "Add Product",
-    icon: <Plus size={28} color="#c95454" />,
-    path: "addProduct",
-  },
+  
 ];
 
 function App() {

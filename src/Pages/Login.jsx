@@ -29,12 +29,12 @@ function Login() {
 
   const navigate = useNavigate();
 
-  // Handle Input Change
+  
   const handleChange = (e) => {
     setData({ ...Data, [e.target.name]: e.target.value });
   };
 
-  // Handle Form Submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -43,7 +43,7 @@ function Login() {
       if (response.status === 200) {
         navigate("/", {
           state: {
-            message: `Welcome To Maseno-Mart, ${Data.email}!`,
+            message: `Welcome To Maseno-Mart`,
             type: "success",
           },
         });
@@ -146,7 +146,7 @@ function Login() {
         <Box my={1}>
           <TextField
             label="Email"
-            type="email"
+            type="text"
             name="email"
             fullWidth
             value={Data.email}
