@@ -2,6 +2,8 @@ import * as React from "react";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 import {
   LayoutDashboard,
   SquareStack,
@@ -112,28 +114,29 @@ function App() {
   }), []);
 
   return (
-    <AppProvider
-      navigation={Navigation.map((item) =>
-        item.path
-          ? {
-              ...item,
-              render: () => (
-                <NavLink
-                  to={item.path}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {item.icon} {item.title}
-                </NavLink>
-              ),
-            }
-          : item
-      )}
-      session={session}
-      authentication={authentication}
-    >
-      <Outlet />
-    </AppProvider>
+    <ThemeProvider theme={theme}>
+      <AppProvider
+        navigation={Navigation.map((item) =>
+          item.path
+            ? {
+                ...item,
+                render: () => (
+                  <NavLink
+                    to={item.path}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                    {item.icon} {item.title}
+                  </NavLink>
+                ),
+              }
+            : item
+        )}
+        session={session}
+        authentication={authentication}
+      >
+        <Outlet />
+      </AppProvider>
+    </ThemeProvider>
   );
 }
-
 export default App;

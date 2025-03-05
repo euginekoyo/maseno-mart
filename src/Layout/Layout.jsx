@@ -66,7 +66,7 @@ function Layout() {
                 borderRadius: 2,
                 height: 35,
                 width: "6rem",
-                bgcolor: "black",
+                bgcolor: "#008000",
                 color: "white",
               }}
             >
@@ -75,7 +75,7 @@ function Layout() {
             </IconButton>
           </Link>
         )}
-        <ThemeSwitcher sx={{ mt: 1 }} />
+      //<ThemeSwitcher sx={{ mt: 1 }} />
       </Stack>
     );
   }
@@ -130,6 +130,10 @@ function Layout() {
   return (
     <DashboardLayout
       defaultSidebarCollapsed
+      sx={{
+        bgcolor: "background.default",
+        color: "text.primary",
+      }}
       slots={{
         appTitle: CustomAppTitle,
         toolbarActions: ToolbarActionsSearch,

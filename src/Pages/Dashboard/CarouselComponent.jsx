@@ -16,15 +16,16 @@ const CarouselComponent = () => {
                 height: "250px",
                 objectFit: "cover",
                 borderRadius: "15px", // 👈 Rounded corners
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 👈 Soft shadow
+                boxShadow: "0 4px 8px rgba(0, 128, 0, 0.3)", // 👈 Soft shadow
               }}
             />
             <Carousel.Caption>
               <h5
                 style={{
-                  background: "rgba(0, 0, 0, 0.5)",
+                  background: "linear-gradient(to right, #006400, #008000",
                   borderRadius: "10px",
                   padding: "5px",
+                  color: "#fff",
                 }}
               >
                 Print @ a Comrade Price
@@ -41,15 +42,16 @@ const CarouselComponent = () => {
                 height: "250px",
                 objectFit: "cover",
                 borderRadius: "15px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                boxShadow: "0 4px 8px rgba(0, 128, 0, 0.3)",
               }}
             />
             <Carousel.Caption>
               <h5
                 style={{
-                  background: "rgba(0, 0, 0, 0.5)",
+                  background: "linear-gradient(to right, #006400, #008000)",
                   borderRadius: "10px",
                   padding: "5px",
+                  color: "fff",
                 }}
               >
                 Become a Seller Today
@@ -66,15 +68,16 @@ const CarouselComponent = () => {
                 height: "250px",
                 objectFit: "cover",
                 borderRadius: "15px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                boxShadow: "0 4px 8px rgba(0, 0128 0, 0.3)",
               }}
             />
             <Carousel.Caption>
               <h5
                 style={{
-                  background: "rgba(0, 0, 0, 0.5)",
+                  background: "linear-gradient(to right, #006400, #008000)",
                   borderRadius: "10px",
                   padding: "5px",
+                  color: "#fff"
                 }}
               >
                 Market your Services
