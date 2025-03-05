@@ -9,7 +9,7 @@ import Filter2 from "./Filter2";
 import SearchButton from "../../components/searchButton";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
   const isMobile = useMediaQuery("(max-width:768px)"); // xs (Extra Small)
 
