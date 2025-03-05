@@ -55,7 +55,8 @@ function Layout() {
           }}
         />
         {loggedIn ? (
-          <Typography fontFamily={"monospace"} fontSize={"1.2rem"} mt={1} sx={{mx:{lg:4}}}>{name}😇</Typography>
+          <Typography fontFamily={"monospace"} fontSize={"1.2rem"} mt={1} sx={{mx:{lg:2}}}>{name}😇</Typography>
+          
         ) : (
           <Link to="/login">
             <IconButton

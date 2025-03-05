@@ -9,6 +9,8 @@ import Filter2 from "./Filter2";
 import SearchButton from "../../components/searchButton";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import RowAndColumnSpacing from "./Gridv2";
 
 function Dashboard() {
   const isMobile = useMediaQuery("(max-width:768px)"); // xs (Extra Small)
@@ -59,18 +61,17 @@ function Dashboard() {
       </Box>
       <div>
         <div className="fade-in">
-          <FilterHeader1 />
+          {/* <FilterHeader1 /> */}
         </div>
         <div className="fade-in">
           <CarouselComponent />
         </div>
         <div className="fade-in">
-          <Filter2 />
+          {/* <Filter2 /> */}
         </div>
-        <div className="fade-in">
-          <BoxBasic />
-        </div>
-
+        <Box ml={2} className="fade-in">
+          <RowAndColumnSpacing />
+        </Box>
         <SimpleBottomNavigation />
       </div>
     </>
