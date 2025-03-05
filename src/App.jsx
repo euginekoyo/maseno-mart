@@ -10,7 +10,7 @@ import {
   Shirt,
   BriefcaseBusiness,
   CookingPot,
-  Plus,
+  ArrowDownAZ,
   Pickaxe,
   Footprints,
   Aperture,
@@ -18,8 +18,9 @@ import {
   Gamepad2,
   Bike,
   Computer,
-  ArrowDownAZ,
 } from "lucide-react";
+import {jwtDecode} from "jwt-decode"; // Fixed import statement
+
 const Navigation = [
   {
     segment: "",
@@ -33,122 +34,83 @@ const Navigation = [
     icon: <SquareStack size={28} color="#c95454" />,
     path: "/products",
     children: [
-      {
-        segment: "all",
-        title: "All",
-        icon: <ArrowDownAZ color="#c95454" />,
-        path: "/products",
-      },
-      {
-        segment: "phone",
-        title: "Phone & Accessories",
-        icon: <MonitorSmartphone color="#c95454" />,
-        path: "/phone",
-      },
-      {
-        segment: "appliance", // ✅ Fixed capitalization
-        title: "Appliance",
-        icon: <Unplug color="#c95454" />,
-        path: "/appliance",
-      },
-      {
-        segment: "clothes",
-        title: "Clothes",
-        icon: <Shirt color="#c95454" />,
-        path: "/clothes",
-      },
-      {
-        segment: "bags",
-        title: "Bags",
-        icon: <BriefcaseBusiness color="#c95454" />,
-        path: "/bags",
-      },
-      {
-        segment: "homeware",
-        title: "Home & Kitchen",
-        icon: <CookingPot color="#c95454" />,
-        path: "/homeware",
-      },
-      {
-        segment: "shoes",
-        title: "Shoes",
-        icon: <Footprints color="#c95454" />,
-        path: "/shoes",
-      },
+      { segment: "all", title: "All", icon: <ArrowDownAZ color="#c95454" />, path: "/products" },
+      { segment: "phone", title: "Phone & Accessories", icon: <MonitorSmartphone color="#c95454" />, path: "/phone" },
+      { segment: "appliance", title: "Appliance", icon: <Unplug color="#c95454" />, path: "/appliance" },
+      { segment: "clothes", title: "Clothes", icon: <Shirt color="#c95454" />, path: "/clothes" },
+      { segment: "bags", title: "Bags", icon: <BriefcaseBusiness color="#c95454" />, path: "/bags" },
+      { segment: "homeware", title: "Home & Kitchen", icon: <CookingPot color="#c95454" />, path: "/homeware" },
+      { segment: "shoes", title: "Shoes", icon: <Footprints color="#c95454" />, path: "/shoes" },
     ],
   },
   {
     segment: "services",
     title: "Services",
     icon: <Pickaxe size={28} color="#c95454" />,
-    path: "./services",
+    path: "/services", // Fixed path (removed ./)
     children: [
-      {
-        segment: "allServices",
-        title: "All",
-        icon: <ArrowDownAZ color="#c95454" />,
-        path: "/services",
-      },
-      {
-        segment: "photography",
-        title: "photography",
-        icon: <Aperture color="#c95454" />,
-        path: "/photography",
-      },
-      {
-        segment: "HairDesign",
-        title: "HairDesign",
-        icon: <Unlink color="#c95454" />,
-        path: "/hairdesign",
-      },
-      {
-        segment: "Gaming",
-        title: "Gaming",
-        icon: <Gamepad2 color="#c95454" />,
-        path: "/gaming",
-      },
-      {
-        segment: "Bikehire",
-        title: "Bikehire",
-        icon: <Bike color="#c95454" />,
-        path: "/Bikehire",
-      },
-      {
-        segment: "CyberServices",
-        title: "CyberService",
-        icon: <Computer color="#c95454" />,
-        path: "/cyberService",
-      },
+      { segment: "allServices", title: "All", icon: <ArrowDownAZ color="#c95454" />, path: "/services" },
+      { segment: "photography", title: "Photography", icon: <Aperture color="#c95454" />, path: "/photography" },
+      { segment: "hairdesign", title: "Hair Design", icon: <Unlink color="#c95454" />, path: "/hairdesign" },
+      { segment: "gaming", title: "Gaming", icon: <Gamepad2 color="#c95454" />, path: "/gaming" },
+      { segment: "bikehire", title: "Bike Hire", icon: <Bike color="#c95454" />, path: "/bikehire" }, // Fixed capitalization
+      { segment: "cyberservices", title: "Cyber Services", icon: <Computer color="#c95454" />, path: "/cyberservices" },
     ],
   },
-  
 ];
 
 function App() {
   const [session, setSession] = React.useState({
     user: {
-      name: "Bharat Kashyap",
-      email: "bharatkashyap@outlook.com",
+      name: "New",
+      email: "new@outlook.com",
       image: "https://avatars.githubusercontent.com/u/19550456",
     },
   });
 
-  const authentication = React.useMemo(() => {
-    return {
-      signIn: () => {
-        setSession({
-          user: {
-            name: "Bharat Kashyap",
-            email: "bharatkashyap@outlook.com",
-            image: "https://avatars.githubusercontent.com/u/19550456",
-          },
-        });
-      },
-      signOut: () => {
-        setSession(null);
-      },
-    };
+  React.useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+
+        if (decoded.exp * 1000 < Date.now()) {
+          localStorage.removeItem("token");
+          setSession({ user: null }); // Reset session if token expired
+        } else {
+          setSession({
+            user: {
+              name: decoded.name || "User",
+              email: decoded.email || "unknown@example.com",
+              image: decoded.image || "https://avatars.githubusercontent.com/u/19550456",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.removeItem("token");
+        setSession({ user: null });
+      }
+    }
   }, []);
+
+  const authentication = React.useMemo(() => ({
+    signIn: () => {
+      setSession({
+        user: {
+          name: "Bharat Kashyap",
+          email: "bharatkashyap@outlook.com",
+          image: "https://avatars.githubusercontent.com/u/19550456",
+        },
+      });
+    },
+    signOut: () => {
+      localStorage.removeItem("token");
+      setSession({ user: null });
+    },
+  }), []);
+
   return (
     <AppProvider
       navigation={Navigation.map((item) =>
