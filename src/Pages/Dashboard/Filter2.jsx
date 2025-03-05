@@ -17,22 +17,23 @@ import HandymanIcon from "@mui/icons-material/Handyman";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import SellIcon from "@mui/icons-material/Sell";
 import { jwtDecode } from "jwt-decode";
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+
+import {StickyNote} from "lucide-react";
 import { createProduct, createService } from "../../api/api";
 // Mock data (replace with actual API calls)
 const mockCategories = [
-  { _id: "1", name: "Electronics" },
-  { _id: "2", name: "Clothing" },
-  { _id: "3", name: "Home & Garden" },
+  { _id: "1", name: "Phones ,Laptop & Accessories" },
+  { _id: "2", name: "Appliances" },
+  { _id: "3", name: "Clothes" },
+  { _id: "4", name: "Bags" },
+  { _id: "5", name: "Home & Kitchen" },
+  { _id: "6", name: "Shoes" },
 ];
 
 const mockBrands = [
-  { _id: "1", name: "Apple" },
-  { _id: "2", name: "Samsung" },
-  { _id: "3", name: "Nike" },
+  { _id: "1", name: "Brand New" },
+  { _id: "2", name: "Second Hand" },
 ];
-
 
 const ProductServiceComponent = () => {
   // State management
@@ -517,8 +518,11 @@ const ProductServiceComponent = () => {
             onClick={handleProductSubmit}
             disabled={loading}
             startIcon={loading ? <CircularProgress size={20} /> : null}
-          ></Button>
-          {loading ? "Submitting..." : "Post Product"}
+          >
+            <Typography fontSize={"1rem"}>Post</Typography>
+            <StickyNote />
+          </Button>
+          {/* {loading ? "Submitting..." : "Post Product"} */}
         </Box>
       </Modal>
 
@@ -534,76 +538,67 @@ const ProductServiceComponent = () => {
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
             <Grid size={6}>
-              
-                <TextField
-                  fullWidth
-                  label="Name"
-                  name="name"
-                  value={serviceFormData.name}
-                  onChange={handleServiceChange}
-                  sx={{ mb: 2 }}
-                  error={!!formErrors.name}
-                  helperText={formErrors.name}
-                  required
-                />
-              
+              <TextField
+                fullWidth
+                label="Name"
+                name="name"
+                value={serviceFormData.name}
+                onChange={handleServiceChange}
+                sx={{ mb: 2 }}
+                error={!!formErrors.name}
+                helperText={formErrors.name}
+                required
+              />
             </Grid>
             <Grid size={6}>
-             
-          
-                <TextField
-                  fullWidth
-                  label="Description"
-                  name="description"
-                  value={serviceFormData.description}
-                  multiline
-                  rows={3}
-                  onChange={handleServiceChange}
-                  sx={{ mb: 2 }}
-                  error={!!formErrors.description}
-                  helperText={formErrors.description}
-                  required
-                />
-              
+              <TextField
+                fullWidth
+                label="Description"
+                name="description"
+                value={serviceFormData.description}
+                multiline
+                rows={3}
+                onChange={handleServiceChange}
+                sx={{ mb: 2 }}
+                error={!!formErrors.description}
+                helperText={formErrors.description}
+                required
+              />
             </Grid>
             <Grid size={6}>
-             
-                <TextField
-                  fullWidth
-                  label="Price"
-                  name="price"
-                  type="number"
-                  value={serviceFormData.price}
-                  onChange={handleServiceChange}
-                  sx={{ mb: 2 }}
-                  error={!!formErrors.price}
-                  helperText={formErrors.price}
-                  required
-                />
-              
+              <TextField
+                fullWidth
+                label="Price"
+                name="price"
+                type="number"
+                value={serviceFormData.price}
+                onChange={handleServiceChange}
+                sx={{ mb: 2 }}
+                error={!!formErrors.price}
+                helperText={formErrors.price}
+                required
+              />
             </Grid>
             <Grid size={6}>
-              
-                {" "}
-                <Button
-                  variant="contained"
-                  component="label"
-                  fullWidth
-                  sx={{ mb: 2 }}
-                  error={!!formErrors.image}
-                >
-                  Upload Image
-                  <input
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    hidden
-                    onChange={handleServiceFileChange}
-                  />
-                </Button>
-              
+              {" "}
+              <Button
+                variant="contained"
+                component="label"
+                fullWidth
+                sx={{ mb: 2 }}
+                error={!!formErrors.image}
+              >
+                Upload Image
+                <input
+                  type="file"
+                  name="image"
+                  accept="image/*"
+                  hidden
+                  onChange={handleServiceFileChange}
+                />
+              </Button>
             </Grid>
-          </Grid>  
+          </Grid>
 
           <Button
             variant="contained"
