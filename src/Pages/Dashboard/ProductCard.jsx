@@ -1,88 +1,55 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { Global } from "@emotion/react";
-import { styled } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { grey } from "@mui/material/colors";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import React from "react";
 import {
   Box,
   Card,
   CardMedia,
   CardContent,
-  CardActions,
-  Avatar,
-  IconButton,
   Typography,
+  CardActions,
+  IconButton,
   Button,
+  Stack,
+  SwipeableDrawer,
+  CssBaseline,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-
-// Fixed: Removed unused imports
-// - CloseIcon
-// - Skeleton
-// - jwtDecode
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { styled } from "@mui/material/styles";
 
 const drawerBleeding = 56;
 
 const Root = styled("div")(({ theme }) => ({
   height: "100%",
-  backgroundColor: grey[100],
-  // Fixed: Replaced non-existent applyStyles with proper theme mode handling
-  [theme.breakpoints.up("md")]: {
-    backgroundColor:
-      theme.palette.mode === "dark"
-        ? theme.palette.background.default
-        : grey[100],
-  },
+  backgroundColor:
+    theme.palette.mode === "light" ? "#fff" : theme.palette.background.default,
 }));
 
 const StyledBox = styled("div")(({ theme }) => ({
-  backgroundColor: "#fff",
-  // Fixed: Replaced non-existent applyStyles with proper theme mode handling
-  [theme.breakpoints.up("md")]: {
-    backgroundColor: theme.palette.mode === "dark" ? grey[800] : "#fff",
-  },
+  backgroundColor: theme.palette.background.paper,
 }));
 
 const Puller = styled("div")(({ theme }) => ({
   width: 30,
   height: 6,
-  backgroundColor: grey[300],
+  backgroundColor: theme.palette.grey[300],
   borderRadius: 3,
   position: "absolute",
   top: 8,
   left: "calc(50% - 15px)",
-  // Fixed: Replaced non-existent applyStyles with proper theme mode handling
-  [theme.breakpoints.up("md")]: {
-    backgroundColor: theme.palette.mode === "dark" ? grey[900] : grey[300],
-  },
-}));
-
-// Fixed: Corrected ExpandMore styled component with proper props
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: expand ? "rotate(180deg)" : "rotate(0deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
 }));
 
 const ProductCard = ({ item, type = "product" }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
+  const handleExpandClick = (event) => {
+    event.stopPropagation(); // Prevent event bubbling
     setIsExpanded(!isExpanded);
   };
 
-  const handleWhatsAppClick = () => {
+  const handleWhatsAppClick = (event) => {
+    event.stopPropagation();
     window.open(
       `https://wa.me/${item.phoneNumber || "254712345678"}`,
       "_blank"
@@ -91,6 +58,7 @@ const ProductCard = ({ item, type = "product" }) => {
 
   return (
     <Box
+      onClick={handleExpandClick} // Open drawer when clicking the card
       sx={{
         width: { lg: "280px", xs: "170px" },
         borderRadius: 2,
@@ -98,6 +66,7 @@ const ProductCard = ({ item, type = "product" }) => {
         display: "flex",
         flexDirection: "column",
         backgroundColor: "background.main",
+        cursor: "pointer",
       }}
     >
       <Box
@@ -111,7 +80,7 @@ const ProductCard = ({ item, type = "product" }) => {
         <CardMedia
           component="img"
           sx={{
-            width: { lg: "280px", xs: "170px" },
+            width: "100%",
             borderRadius: 2,
             height: { lg: "200px", xs: "150px" },
             objectFit: "cover",
@@ -124,13 +93,7 @@ const ProductCard = ({ item, type = "product" }) => {
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            height: 40,
-          }}
+          sx={{ height: 40, overflow: "hidden" }}
         >
           {item.title || item.name} -{" "}
           {type === "product" ? "Free Delivery" : "Service Available"}
@@ -153,49 +116,35 @@ const ProductCard = ({ item, type = "product" }) => {
       >
         <Box>
           <IconButton
-            aria-label="add to favorites"
+            onClick={(event) => event.stopPropagation()}
             color="primary"
             size="small"
           >
             <FavoriteIcon />
           </IconButton>
-          <IconButton aria-label="share" color="primary" size="small">
+          <IconButton
+            onClick={(event) => event.stopPropagation()}
+            color="primary"
+            size="small"
+          >
             <ShareIcon />
           </IconButton>
           <IconButton
-            aria-label="whatsapp"
+            onClick={handleWhatsAppClick}
             color="primary"
             size="small"
-            onClick={handleWhatsAppClick}
           >
             <WhatsAppIcon />
           </IconButton>
         </Box>
-        <ExpandMore
-          expand={isExpanded}
-          onClick={handleExpandClick}
-          aria-expanded={isExpanded}
-          aria-label="show more"
-          color="primary"
-          size="small"
-        >
+        <IconButton onClick={handleExpandClick} color="primary" size="small">
           <ExpandMoreIcon />
-        </ExpandMore>
+        </IconButton>
       </CardActions>
 
+      {/* Swipeable Drawer */}
       <Root>
         <CssBaseline />
-        <Global
-          styles={{
-            ".MuiDrawer-root > .MuiPaper-root": {
-              height: `calc(90% - ${drawerBleeding}px)`, // Default for mobile
-              overflow: "visible",
-              "@media (min-width: 1200px)": {
-                height: `calc(50% - ${drawerBleeding}px)`, // For lg screens
-              },
-            },
-          }}
-        />
         <SwipeableDrawer
           anchor="bottom"
           open={isExpanded}
@@ -211,27 +160,24 @@ const ProductCard = ({ item, type = "product" }) => {
               top: -drawerBleeding,
               borderTopLeftRadius: 8,
               borderTopRightRadius: 8,
-              visibility: "visible",
-              right: 0,
-              left: 0,
             }}
           >
             <Puller />
           </StyledBox>
-          <StyledBox sx={{ px: 2,  height: "100%", overflow: "auto" }}>
+          <StyledBox sx={{ px: 2, height: "100%", overflow: "auto" }}>
             <Box
               sx={{
                 alignItems: "center",
-                display: { xs: "flex" },
-                flexDirection: { xs: "column" },
+                display: "flex",
+                flexDirection: "column",
                 gap: 1,
               }}
             >
-              <Card sx={{ my: { xs: 2 }, borderRadius: 2 }}>
+              <Card sx={{ my: 2, borderRadius: 2 }}>
                 <CardMedia
                   component="img"
                   sx={{
-                    width: { lg: "280px", xs: "100%" },
+                    width: "100%",
                     borderRadius: 2,
                     height: { lg: "200px", xs: "70%" },
                     objectFit: "cover",
@@ -240,35 +186,56 @@ const ProductCard = ({ item, type = "product" }) => {
                   alt={item.title || item.name}
                 />
               </Card>
-              <Box sx={{width:{xs:"100%"},height:{xs:"200%"}}}>
-                <Box sx={{ borderRadius:4, boxShadow: 6 }}>
-                  <Typography variant="subtitle1" mx={2} fontWeight={600}>
-                    {item.title || item.name}
-                  </Typography>
+              <Box sx={{ width: "100%", height: "100%" }}>
+                <Box
+                  sx={{
+                    borderRadius: 4,
+                    boxShadow: 6,
+                    my: -15,
+
+                    backgroundColor: "background.paper",
+                    mb: 3,
+                  }}
+                >
+                  <Stack direction="row" sx={{ mx: 0.5 }} spacing={7}>
+                    <Box sx={{ display: "flex", flexDirection: "row" }}>
+                      <Typography my={2} mx={1}>
+                        {item.title || item.name}
+                      </Typography>
+                      <IconButton
+                        sx={{
+                          bgcolor: "green",
+                          borderRadius: 2,
+                          my: 1,
+                          width: 70,
+                          height: 20,
+                          fontSize: ".7rem",
+                        }}
+                      >
+                        in stock
+                      </IconButton>
+                    </Box>
+                    <Box>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        startIcon={<WhatsAppIcon />}
+                        sx={{ mb: 6, mt: 1.5, width: 130 }}
+                        onClick={handleWhatsAppClick}
+                      >
+                        <Typography fontSize="0.6rem">Contact me</Typography>
+                      </Button>
+                    </Box>
+                  </Stack>
                   <Typography
                     variant="caption"
-                    mx={2}
-                    sx={{ fontSize: "0.8rem", color: "text.secondary" }}
+                    sx={{ fontSize: "0.8rem", color: "text.secondary", mx: 3 }}
                   >
                     {new Date().toDateString()}
                   </Typography>
-                  <Typography paragraph sx={{ pl: 2, mt: 2 }}>
+                  <Typography paragraph sx={{ pl: 2, mt: 2,pb:4 }}>
                     {item.description || "No description available."}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="success"
-                    startIcon={<WhatsAppIcon />}
-                    sx={{
-                      mb: 6,
-                      display: "flex",
-                      justifyContent: "center",
-                      mx: "auto",
-                    }}
-                    onClick={handleWhatsAppClick}
-                  >
-                    Contact me
-                  </Button>
                 </Box>
               </Box>
             </Box>
@@ -277,21 +244,6 @@ const ProductCard = ({ item, type = "product" }) => {
       </Root>
     </Box>
   );
-};
-
-ProductCard.propTypes = {
-  // Fixed: Added proper prop types validation
-  item: PropTypes.shape({
-    title: PropTypes.string,
-    name: PropTypes.string,
-    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    images: PropTypes.string,
-    image: PropTypes.string,
-    description: PropTypes.string,
-    phoneNumber: PropTypes.string,
-  }).isRequired,
-  type: PropTypes.oneOf(["product", "service"]),
-  window: PropTypes.func,
 };
 
 export default ProductCard;

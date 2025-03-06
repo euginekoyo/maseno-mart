@@ -22,7 +22,16 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { fetchServices } from "../api/api";
-import { Camera, Bath, Utensils ,Bike,Gamepad2, Computer, FlameKindling} from "lucide-react";
+import {
+  Camera,
+  Bath,
+  Utensils,
+  Bike,
+  Gamepad2,
+  Computer,
+  FlameKindling,
+} from "lucide-react";
+import SimpleBottomNavigation from "../components/SimpleBottomNavigation";
 
 const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
   marginLeft: "auto",
@@ -33,8 +42,8 @@ const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
 }));
 
 function Services() {
-    const [value, setValue] = React.useState(0);
-  
+  const [value, setValue] = React.useState(0);
+
   const [services, setServices] = React.useState([]);
   const [expandedItemId, setExpandedItemId] = React.useState(null);
   const [error, setError] = React.useState(null);
@@ -113,13 +122,13 @@ function Services() {
                 },
               }}
             >
-              <Tab label="All" icon={<Bath size={20} />}/>
-              <Tab label="Photography" icon={<Camera size={20}/>}/>
-              <Tab label="Fast Food" icon={<Utensils size={20}/>}/>
-              <Tab label="Hair Design" icon={<FlameKindling size={20}/>}/>
-              <Tab label="Gaming" icon={<Gamepad2 size={20}/>}/>
-              <Tab label="Bike Hire" icon={<Bike size={20}/>}/>
-              <Tab label="Cyber Services" icon={<Computer size={20}/>} />
+              <Tab label="All" icon={<Bath size={20} />} />
+              <Tab label="Photography" icon={<Camera size={20} />} />
+              <Tab label="Fast Food" icon={<Utensils size={20} />} />
+              <Tab label="Hair Design" icon={<FlameKindling size={20} />} />
+              <Tab label="Gaming" icon={<Gamepad2 size={20} />} />
+              <Tab label="Bike Hire" icon={<Bike size={20} />} />
+              <Tab label="Cyber Services" icon={<Computer size={20} />} />
             </Tabs>
           </Box>
         </Box>
@@ -135,28 +144,38 @@ function Services() {
             </Grid>
           ) : (
             services.map((item) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
-                <Card
+              <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
+                <Box
                   sx={{
                     maxWidth: 350,
                     mx: "auto",
                     borderRadius: 2,
-                    boxShadow: 3,
                     mb: 2,
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
                   }}
                 >
-                  <Box sx={{ position: "relative", flex: "0 0 auto" }}>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      flex: "0 0 auto",
+                      bgcolor: "#F1F3F4",
+                      borderRadius: 2,
+                    }}
+                  >
                     <CardMedia
                       component="img"
                       sx={{
-                        height: 300,
+                        width: "100%",
+                        borderRadius: 2,
+                        height: { lg: "200px", xs: "150px" },
                         objectFit: "cover",
                       }}
-                      image={item.image || "/default-placeholder.jpg"}
-                      alt={item.name}
+                      image={
+                        item.images || item.image || "/src/assets/jersey.jpg"
+                      }
+                      alt={item.title || item.name}
                     />
                   </Box>
                   <CardContent sx={{ padding: "5px 10px", flex: "1 0 auto" }}>
@@ -271,7 +290,10 @@ function Services() {
                           </Typography>
                           <Typography
                             variant="caption"
-                            sx={{ fontSize: "0.8rem", color: "text.secondary" }}
+                            sx={{
+                              fontSize: "0.8rem",
+                              color: "text.secondary",
+                            }}
                           >
                             {new Date().toDateString()}
                           </Typography>
@@ -301,11 +323,12 @@ function Services() {
                       </Button>
                     </Box>
                   </Dialog>
-                </Card>
+                </Box>
               </Grid>
             ))
           )}
         </Grid>
+        <SimpleBottomNavigation />
       </Box>
     </>
   );
