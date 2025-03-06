@@ -4,10 +4,10 @@ import SearchIcon from "@mui/icons-material/Search";
 
 function SearchButton() {
   return (
-    <div>
       <TextField
-        label="Search"
+        // label="Search"
         variant="outlined"
+        placeholder="serch"
         size="small"
         colo
         fullWidth
@@ -29,15 +29,15 @@ function SearchButton() {
           mr: { lg: 10, xs: 0.1 },
           mt: { lg: 2 },
           "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "#ff5833" }, // Border color
-            "&:hover fieldset": { borderColor: "#ffbd69" }, // Hover color
-            "&.Mui-focused fieldset": { borderColor: "#ffcd00" }, // Focus color
+            "& fieldset": { borderColor: "background.paper" }, // Border color
+            "&:hover fieldset": { borderColor: "background.paper" }, // Hover color
+            "&.Mui-focused fieldset": { borderColor: "background.paper" }, // Focus color
           },
           input: { color: "#ffffff" }, // Text color
           backgroundColor: "#333", // Background color
+          borderRadius: 10,
         }}
       />
-    </div>
   );
 }
 
