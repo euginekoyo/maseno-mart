@@ -6,7 +6,11 @@ import {
   IconButton,
   TextField,
   Typography,
-  Tooltip,MenuItem, Select, FormControl, InputLabel
+  Tooltip,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import {
   Facebook,
@@ -69,8 +73,8 @@ function SignUp() {
           my: 2,
           bgcolor: "black",
           mx: { xs: 5 },
-          boxShadow: 10,
-          borderRadius: 4,
+          boxShadow: 1,
+          borderRadius: 2,
           width: { xs: 300 },
           height: { lg: "100%" },
         }}
@@ -80,125 +84,8 @@ function SignUp() {
         <Typography mx={4}>Maseno-Mart</Typography>
       </IconButton>
       <Box
-        container
-        component={"form"}
-        onSubmit={handleSubmit}
         sx={{
-          mx: { lg: 55, xs: 2 },
-          my: 6,
-          boxShadow: 10,
-          borderRadius: 6,
-          width: { lg: 400, xs: 350 },
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h5" fontFamily={"monospace"} my={2}>
-          Signup
-        </Typography>
-        <Typography fontSize={"0.85rem"} fontFamily={"monospace"}>
-          Please enter your details...
-        </Typography>
-        <Box my={1}>
-          <TextField
-            label="username"
-            name="name"
-            onChange={handleChange}
-            fullWidth
-            size="small"
-            sx={{ fontFamily: "monospace" }}
-          />
-        </Box>
-
-        <Box my={1}>
-          <TextField
-            label="email"
-            name="email"
-            fullWidth
-            onChange={handleChange}
-            size="small"
-            sx={{ fontFamily: "monospace" }}
-          />
-        </Box>
-        <Box my={1}>
-          <TextField
-            label="password"
-            name="password"
-            type="password"
-            fullWidth
-            onChange={handleChange}
-            color="warning"
-            size="small"
-            sx={{ fontFamily: "monospace" }}
-          />
-        </Box>
-        <FormControl sx={{width:205,mt:.5}}>
-          <InputLabel sx={{fontSize:".85rem"}}>User Role</InputLabel>
-          <Select
-            name="role"
-            size="small"
-            value={formData.role}
-            onChange={handleChange}
-            required
-          >
-            <MenuItem value="buyer">Buyer</MenuItem>
-            <MenuItem value="seller">Seller</MenuItem>
-          </Select>
-        </FormControl>
-
-        <Box my={2}>
-          <IconButton
-            sx={{ bgcolor: "black", borderRadius: 2, mx: 8, width: 230 }}
-            type="submit"
-          >
-            <Typography
-              mx={1}
-              sx={{ fontFamily: "monospace", fontSize: "0.85rem" }}
-            >
-              Register
-            </Typography>
-            <LogIn />
-          </IconButton>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "row", py: 1 }}>
-          <Typography
-            mx={1}
-            my={0.5}
-            fontSize={{ xs: "0.75rem" }}
-            fontFamily={"monospace"}
-          >
-            Already have an account?
-          </Typography>
-          <Link
-            to={"/login"}
-            style={{
-              textDecoration: "underline",
-              color: "wheat",
-              fontFamily: "monospace",
-
-              fontSize: "0.85rem",
-            }}
-          >
-            login
-          </Link>
-        </Box>
-      </Box>
-      <Stack
-        my={6}
-        sx={{ mx: { xs: 8, lg: 50 } }}
-        direction={"row"}
-        spacing={2}
-      >
-        <Divider sx={{ width: { xs: 100, lg: 200 } }} />
-        <Typography mt={8}>Or</Typography>
-        <Divider sx={{ width: { xs: 100, lg: 200 } }} />
-      </Stack>
-      <Box
-        sx={{
-          mb: 4,
+          my: 4,
           mx: { xs: 2, lg: 50 },
           bgcolor: "ButtonHighlight",
           borderRadius: 4,
@@ -273,9 +160,130 @@ function SignUp() {
               sx={{ borderRadius: 4, width: { xs: 80, lg: 100 } }}
               disabled
             >
-              <XIcon />
+              <XIcon />   
             </IconButton>
           </Tooltip>
+        </Box>
+      </Box>
+      <Stack
+        my={6}
+        sx={{ mx: { xs: 8, lg: 50 } }}
+        direction={"row"}
+        spacing={2}
+      >
+        <Divider sx={{ width: { xs: 100, lg: 200 } }} />
+        <Typography mt={8}>Or</Typography>
+        <Divider sx={{ width: { xs: 100, lg: 200 } }} />
+      </Stack>
+      <Box
+        container
+        component={"form"}
+        onSubmit={handleSubmit}
+        sx={{
+          mx: { lg: 55, xs: 2 },
+          my: 6,
+          boxShadow: 3,
+          borderRadius: 4,
+          width: { lg: 400, xs: 360 },
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h5" fontFamily={"monospace"} my={2}>
+          Signup
+        </Typography>
+
+        <Box my={1}>
+          <TextField
+            label="username"
+            name="name"
+            onChange={handleChange}
+            fullWidth
+            size="small"
+            sx={{ fontFamily: "monospace" ,width:300 }}
+          />
+        </Box>
+
+        <Box my={1}>
+          <TextField
+            label="email"
+            name="email"
+            fullWidth
+            onChange={handleChange}
+            size="small"
+            sx={{ fontFamily: "monospace" ,width:300 }}
+          />
+        </Box>
+        <Box my={1}>
+          <TextField
+            label="password"
+            name="password"
+            type="password"
+            fullWidth
+            onChange={handleChange}
+            color="warning"
+            size="small"
+            sx={{ fontFamily: "monospace" ,width:300 }}
+          />
+        </Box>
+        <Box my={1}>
+          <FormControl sx={{ width: 300 }}>
+            <InputLabel sx={{ fontSize: ".85rem" }}>User Role</InputLabel>
+            <Select
+            
+              name="role"
+              size="small"
+              value={formData.role}
+              onChange={handleChange}
+              required
+            >
+              <MenuItem value="buyer">Buyer</MenuItem>
+              <MenuItem value="seller">Seller</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Box my={2}>
+          <IconButton
+            sx={{
+              bgcolor: "tomato",
+              borderRadius: 2,
+              mx: 8,
+              width: 230,
+            }}
+            type="submit"
+          >
+            <Typography
+              mx={1}
+              sx={{ fontFamily: "monospace", fontSize: "0.85rem" }}
+            >
+              Register
+            </Typography>
+            <LogIn />
+          </IconButton>
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "row", py: 1 }}>
+          <Typography
+            mx={1}
+            my={0.5}
+            fontSize={{ xs: "0.75rem" }}
+            fontFamily={"monospace"}
+          >
+            Already have an account?
+          </Typography>
+          <Link
+            to={"/login"}
+            style={{
+              textDecoration: "underline",
+              fontFamily: "monospace",
+
+              fontSize: "0.85rem",
+            }}
+          >
+            signin
+          </Link>
         </Box>
       </Box>
     </>

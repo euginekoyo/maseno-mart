@@ -2,8 +2,6 @@ import * as React from "react";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./theme";
 import {
   LayoutDashboard,
   SquareStack,
@@ -127,6 +125,7 @@ const Navigation = [
 ];
 
 function App() {
+ 
   const [session, setSession] = React.useState({
     user: {
       name: "User",

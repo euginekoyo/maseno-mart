@@ -22,7 +22,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { fetchProducts } from "../api/api";
-import FilterHeader1 from "./Dashboard/FilterHeader1";
 
 const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
   marginLeft: "auto",

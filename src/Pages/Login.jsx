@@ -68,7 +68,7 @@ function Login() {
       {/* Header with Logo */}
       <IconButton
         sx={{
-          mt: -27,
+          mt: -10,
           mx: { xs: 5 },
           boxShadow: 10,
           borderRadius: 4,
@@ -88,7 +88,6 @@ function Login() {
           mx: { xs: 1, lg: 60 },
           bgcolor: "ButtonHighlight",
           borderRadius: 4,
-          boxShadow: 10,
           display: "flex",
           justifyContent: "center",
         }}
@@ -124,21 +123,23 @@ function Login() {
 
       {/* Login Form */}
       <Box
-        component={"form"}
-        onSubmit={handleSubmit}
-        sx={{
-          mx: { lg: 60, xs: 5 },
-          boxShadow: 10,
-          borderRadius: 6,
-          width: { lg: 400, xs: 300 },
-          height: 300,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+      container
+      component={"form"}
+      onSubmit={handleSubmit}
+      sx={{
+        mx: { lg: 55, xs: 2 },
+        my: 6,
+        boxShadow: 3,
+        borderRadius: 4,
+        width: { lg: 400, xs: 360 },
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
       >
-        <Typography variant="h5" fontFamily={"monospace"} mt={-4}>
+        <Typography variant="h5" fontFamily={"monospace"} my={2}>
           Login
         </Typography>
 
@@ -149,10 +150,11 @@ function Login() {
             type="text"
             name="email"
             fullWidth
+
             value={Data.email}
             onChange={handleChange}
             size="small"
-            sx={{ fontFamily: "monospace" }}
+            sx={{ fontFamily: "monospace", width:300}}
             required
           />
         </Box>
@@ -164,10 +166,11 @@ function Login() {
             type="password"
             name="password"
             fullWidth
+            
             value={Data.password}
             onChange={handleChange}
             size="small"
-            sx={{ fontFamily: "monospace" }}
+            sx={{ fontFamily: "monospace" ,width:300 }}
             required
           />
         </Box>
@@ -181,7 +184,7 @@ function Login() {
         {/* Login Button */}
         <Box my={2}>
           <IconButton
-            sx={{ bgcolor: "black", borderRadius: 2, mx: 8, width: 230 }}
+            sx={{ bgcolor: " tomato", borderRadius: 2, mx: 8, width: 230 }}
             type="submit"
           >
             <Typography mx={1} sx={{ fontFamily: "monospace", fontSize: "0.85rem" }}>
@@ -192,7 +195,7 @@ function Login() {
         </Box>
 
         {/* Signup Link */}
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ display: "flex", flexDirection: "row" ,mb:3}}>
           <Typography mx={1} my={0.5} fontSize="0.75rem" fontFamily="monospace">
             Don't have an account?
           </Typography>
@@ -200,7 +203,6 @@ function Login() {
             to="/signup"
             style={{
               textDecoration: "underline",
-              color: "wheat",
               fontFamily: "monospace",
               fontSize: "0.85rem",
             }}
