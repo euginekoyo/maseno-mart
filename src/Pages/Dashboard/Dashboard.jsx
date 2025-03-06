@@ -9,7 +9,6 @@ function Dashboard() {
   const isMobile = useMediaQuery("(max-width:768px)"); // xs (Extra Small)
 
   useEffect(() => {
-
     const sr = ScrollReveal({
       duration: 1000,
       origin: "bottom",
@@ -22,19 +21,14 @@ function Dashboard() {
     sr.reveal(".fade-in", { opacity: 0, scale: 0.95 });
   }, [isMobile]);
 
- 
-  
-  
   return (
     <>
-      
       <div>
-        
         <div className="fade-in">
           <CarouselComponent />
         </div>
-        
-        <Box ml={-1} sx={{ml:{xs:-1,lg:6}}} className="fade-in">
+
+        <Box ml={-1} sx={{ ml: { xs: -1, lg: 6 } }} className="fade-in">
           <RowAndColumnSpacing />
         </Box>
         <SimpleBottomNavigation />

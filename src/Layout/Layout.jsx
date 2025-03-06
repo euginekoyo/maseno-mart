@@ -20,6 +20,7 @@ import XIcon from "@mui/icons-material/X";
 import { jwtDecode } from "jwt-decode"; // ✅ Fixed import
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import SimpleBottomNavigation from "../components/SimpleBottomNavigation";
 function Layout() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [name, setName] = useState("");
@@ -195,6 +196,7 @@ function Layout() {
       <Box my={2.5} mx={1.5} width={365}>
         {isMobile && <SearchButton />}
       </Box>
+    
       <Outlet />
     </DashboardLayout>
   );
