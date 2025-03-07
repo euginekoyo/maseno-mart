@@ -1,0 +1,41 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 60px;
+    box-shadow: 0 1px 3px -2px black;
+    margin-bottom: 1px;
+    background: white; /* Background remains white */
+}
+
+.nav-logo {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+}
+
+.maseno {
+    color: #0077cc; /* Maseno Sky Blue */
+}
+
+.mart {
+    color: #ffb07c; /* Peach */
+}
+
+.nav-profile {
+    width: 75px;
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        padding: 15px 30px;
+    } 
+    .nav-logo {
+        font-size: 1.5rem; /* Adjust size for smaller screens */
+    }
+    .nav-profile {
+        width: 60px;
+    }
+}

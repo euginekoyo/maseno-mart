@@ -28,7 +28,7 @@ function Dashboard() {
           <CarouselComponent />
         </div>
 
-        <Box ml={-1} sx={{ ml: { xs: -1, lg: 6 } }} className="fade-in">
+        <Box  className="fade-in">
           <RowAndColumnSpacing />
         </Box>
         <SimpleBottomNavigation />

@@ -1,292 +1,158 @@
-import React from "react";
-import {
-  Stack,
-  Box,
-  Divider,
-  IconButton,
-  TextField,
-  Typography,
-  Tooltip,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-} from "@mui/material";
-import {
-  Facebook,
-  Smile,
-  InstagramIcon,
-  LogIn,
-  ShoppingBasket,
-} from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import GoogleIcon from "@mui/icons-material/Google";
-import XIcon from "@mui/icons-material/X";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { signupUser } from "../api/api";
 import Swal from "sweetalert2";
+import GoogleIcon from "@mui/icons-material/Google";
+import { Link } from "react-router-dom";
+
 function SignUp() {
-  const [formData, setFormData] = React.useState({
-    name: "",
+  const [formData, setFormData] = useState({
+    userName: "",
     email: "",
     password: "",
-    role: "",
+    userRole: "",
   });
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await signupUser(formData);
-
       if (response.status === 200) {
         navigate("/", {
           state: {
-            message: `Welcome To Maseno-Mart${(<Smile color="#a9e10e" strokeWidth={3} />)}, ${formData.name}!`,
+            message: `Welcome To Maseno-Mart`,
             type: "success",
           },
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error during signup:", error);
 
       Swal.fire({
-        toast: true, // Enable toast mode
-        position: "top", // Ensure it's at the top-right
+        toast: true,
+        position: "top",
         icon: "error",
         title: error.response?.data?.message || "Something went wrong.",
         showConfirmButton: false,
-        timer: 3000, // Auto-dismiss after 3 seconds
+        timer: 3000,
         timerProgressBar: true,
-        customClass: {
-          popup: "custom-swal-popup", // Custom class for styling
-        },
       });
     }
   };
 
   return (
-    <>
-      <IconButton
-        sx={{
-          my: 2,
-          bgcolor: "black",
-          mx: { xs: 5 },
-          boxShadow: 1,
-          borderRadius: 2,
-          width: { xs: 300 },
-          height: { lg: "100%" },
-        }}
-      >
-        <ShoppingBasket color="lightBlue" size={40} />
+    <div className="container d-flex justify-content-center align-items-center min-vh-100">
+      <div className="card shadow-lg p-4" style={{ width: "400px", borderRadius: "15px" }}>
+        <div className="d-flex justify-content-center mb-4">
+          <h4>Maseno-Mart</h4>
+        </div>
 
-        <Typography mx={4}>Maseno-Mart</Typography>
-      </IconButton>
-      <Box
-        sx={{
-          my: 4,
-          mx: { xs: 2, lg: 50 },
-          bgcolor: "ButtonHighlight",
-          borderRadius: 4,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <Box>
-          <Tooltip
-            placement="top"
-            popover="auto"
-            followCursor="true"
-            title="Continue with Facebook"
-          >
-            <IconButton
-              my={1}
-              sx={{
-                borderRadius: 4,
-                width: { xs: 80, lg: 100 },
-              }}
-            >
-              <Facebook />
-            </IconButton>
-          </Tooltip>
-        </Box>
-        <Box>
-          <Tooltip
-            placement="top"
-            popover="auto"
-            followCursor="true"
-            title="Continue with Github"
-          >
-            <IconButton
-              my={1}
-              sx={{ borderRadius: 4, width: { xs: 80, lg: 100 } }}
-              disabled
-            >
-              <GoogleIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
-
-        <Box>
-          <Tooltip
-            placement="top"
-            popover="auto"
-            followCursor="true"
-            title="Continue with Instagram"
-          >
-            <IconButton
-              my={1}
-              sx={{
-                borderRadius: 4,
-                width: { xs: 80, lg: 100 },
-              }}
-            >
-              <InstagramIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
-
-        <Box>
-          <Tooltip
-            placement="top"
-            popover="auto"
-            followCursor="true"
-            title="Continue with Linkedin"
-          >
-            <IconButton
-              my={1}
-              sx={{ borderRadius: 4, width: { xs: 80, lg: 100 } }}
-              disabled
-            >
-              <XIcon />   
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Box>
-      <Stack
-        my={6}
-        sx={{ mx: { xs: 8, lg: 50 } }}
-        direction={"row"}
-        spacing={2}
-      >
-        <Divider sx={{ width: { xs: 100, lg: 200 } }} />
-        <Typography mt={8}>Or</Typography>
-        <Divider sx={{ width: { xs: 100, lg: 200 } }} />
-      </Stack>
-      <Box
-        container
-        component={"form"}
-        onSubmit={handleSubmit}
-        sx={{
-          mx: { lg: 55, xs: 2 },
-          my: 6,
-          boxShadow: 3,
-          borderRadius: 4,
-          width: { lg: 400, xs: 360 },
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h5" fontFamily={"monospace"} my={2}>
-          Signup
-        </Typography>
-
-        <Box my={1}>
-          <TextField
-            label="username"
-            name="name"
-            onChange={handleChange}
-            fullWidth
-            size="small"
-            sx={{ fontFamily: "monospace" ,width:300 }}
-          />
-        </Box>
-
-        <Box my={1}>
-          <TextField
-            label="email"
-            name="email"
-            fullWidth
-            onChange={handleChange}
-            size="small"
-            sx={{ fontFamily: "monospace" ,width:300 }}
-          />
-        </Box>
-        <Box my={1}>
-          <TextField
-            label="password"
-            name="password"
-            type="password"
-            fullWidth
-            onChange={handleChange}
-            color="warning"
-            size="small"
-            sx={{ fontFamily: "monospace" ,width:300 }}
-          />
-        </Box>
-        <Box my={1}>
-          <FormControl sx={{ width: 300 }}>
-            <InputLabel sx={{ fontSize: ".85rem" }}>User Role</InputLabel>
-            <Select
-            
-              name="role"
-              size="small"
-              value={formData.role}
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="userName" className="form-label">Username</label>
+            <input
+              type="text"
+              className="form-control"
+              id="userName"
+              name="userName"
+              value={formData.userName}
               onChange={handleChange}
               required
-            >
-              <MenuItem value="buyer">Buyer</MenuItem>
-              <MenuItem value="seller">Seller</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-        <Box my={2}>
-          <IconButton
-            sx={{
-              bgcolor: "tomato",
-              borderRadius: 2,
-              mx: 8,
-              width: 230,
-            }}
-            type="submit"
-          >
-            <Typography
-              mx={1}
-              sx={{ fontFamily: "monospace", fontSize: "0.85rem" }}
-            >
-              Register
-            </Typography>
-            <LogIn />
-          </IconButton>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "row", py: 1 }}>
-          <Typography
-            mx={1}
-            my={0.5}
-            fontSize={{ xs: "0.75rem" }}
-            fontFamily={"monospace"}
-          >
-            Already have an account?
-          </Typography>
-          <Link
-            to={"/login"}
-            style={{
-              textDecoration: "underline",
-              fontFamily: "monospace",
+              aria-label="Enter your username"
+            />
+          </div>
 
-              fontSize: "0.85rem",
-            }}
-          >
-            signin
-          </Link>
-        </Box>
-      </Box>
-    </>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              aria-label="Enter your email"
+            />
+          </div>
+
+          <div className="mb-3 position-relative">
+            <label htmlFor="password" className="form-label">Password</label>
+            <div className="d-flex">
+              <input
+                type={passwordVisible ? "text" : "password"}
+                className="form-control"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                aria-label="Enter your password"
+              />
+              <button
+                type="button"
+                className="btn btn-link p-0 ms-2"
+                onClick={togglePasswordVisibility}
+                aria-label="Toggle Password Visibility"
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#007bff",
+                  cursor: "pointer",
+                  fontSize: "1rem",
+                }}
+              >
+                {passwordVisible ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="userRole" className="form-label">Role</label>
+            <select
+              name="userRole"
+              className="form-select"
+              value={formData.userRole}
+              onChange={handleChange}
+              required
+              aria-label="Select your role"
+            >
+              <option value="">Select Role</option>
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller</option>
+            </select>
+          </div>
+
+          <button type="submit" className="btn btn-dark w-100">Register</button>
+        </form>
+
+        <div className="text-center mt-3">
+          <p>
+            Already have an account?{" "}
+            <Link to="/login" className="text-decoration-underline">Login</Link>
+          </p>
+        </div>
+
+        {/* Google login */}
+        <div className="d-flex justify-content-center mt-3">
+          <button className="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center">
+            <GoogleIcon style={{ marginRight: "10px" }} />
+            Continue with Google
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

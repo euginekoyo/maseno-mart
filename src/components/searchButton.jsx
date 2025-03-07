@@ -1,44 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+function SearchBar({ onSearch }) {
+  const [query, setQuery] = React.useState("");
 
-function SearchButton() {
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      onSearch(query);
+    }
+  };
+
   return (
-      <TextField
-        // label="Search"
-        variant="outlined"
-        placeholder="serch"
-        size="small"
-        colo
-        fullWidth
-        InputProps={{
-          endAdornment: (
-            <IconButton
-              type="button"
-              aria-label="search"
-              size="small"
-              sx={{ borderRadius: 2 }}
-            >
-              <SearchIcon />
-            </IconButton>
-          ),
-        }}
-        sx={{
-          display: { xs: "block", md: "inline-block" },
-          width: { xs: "100%", sm: "auto" },
-          mr: { lg: 10, xs: 0.1 },
-          mt: { lg: 2 },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": { borderColor: "background.paper" }, // Border color
-            "&:hover fieldset": { borderColor: "background.paper" }, // Hover color
-            "&.Mui-focused fieldset": { borderColor: "background.paper" }, // Focus color
-          },
-          input: { color: "#ffffff" }, // Text color
-          backgroundColor: "#333", // Background color
-          borderRadius: 10,
-        }}
-      />
+    <TextField
+      variant="outlined"
+      placeholder="Search..."
+      size="small"
+      fullWidth
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      onKeyDown={handleKeyPress}
+      InputProps={{
+        endAdornment: (
+          <IconButton onClick={() => onSearch(query)} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+        ),
+      }}
+      sx={{
+        width: "100%",
+        backgroundColor: "#fff",
+        borderRadius: 2,
+        mb: 2,
+      }}
+    />
   );
 }
 
-export default SearchButton;
+export default SearchBar;
