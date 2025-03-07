@@ -16,7 +16,7 @@ import ListService from "./Pages/Admin/AdminComponents/listService/ListService";
 import AdminRoute from "./components/AdminRoute"; // ✅ Import protected route
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import Profile from "./Pages/Profile.jsx";
+import Profile from "./Pages/profile.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
