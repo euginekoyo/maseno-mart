@@ -80,9 +80,9 @@ export const createProduct = async (formData) => {
 };
 
 export const updateProduct = (productId, productData) =>
-  api.put(`/products/${productId}`, productData);
+  api.put(`/${productId}`, productData);
 export const deleteProduct = (productId) =>
-  api.delete(`/products/${productId}`);
+  api.delete(`/${productId}`);
 
 // Service APIs
 export const fetchServices = () => api.get("/services");
