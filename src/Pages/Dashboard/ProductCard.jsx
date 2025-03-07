@@ -69,12 +69,12 @@ const ProductCard = ({ item, type = "product" }) => {
           flexDirection: "column",
           backgroundColor: "background.paper",
           cursor: "pointer",
-          boxShadow: 1,
         }}
       >
         <Box
           sx={{
             position: "relative",
+
             flex: "0 0 auto",
             bgcolor: "#F1F3F4",
             borderRadius: "8px 8px 0 0",
@@ -211,7 +211,7 @@ const ProductCard = ({ item, type = "product" }) => {
               spacing={3}
               sx={{ mt: 1 }}
             >
-              <Card
+              <Box
                 sx={{
                   borderRadius: 2,
                   width: { xs: "100%", md: "40%" },
@@ -229,13 +229,12 @@ const ProductCard = ({ item, type = "product" }) => {
                   image={item.images || item.image || "/src/assets/jersey.jpg"}
                   alt={item.title || item.name}
                 />
-              </Card>
+              </Box>
 
               <Box sx={{ width: { xs: "100%", md: "60%" } }}>
-                <Card
+                <Card 
                   sx={{
                     borderRadius: 2,
-                    boxShadow: 2,
                     p: 2,
                     mb: 2,
                   }}
@@ -250,7 +249,7 @@ const ProductCard = ({ item, type = "product" }) => {
                       <Typography variant="h6" fontWeight="bold">
                         {item.title || item.name}
                       </Typography>
-                      <Box
+                      <Card
                         sx={{
                           display: "inline-block",
                           bgcolor: "success.main",
@@ -263,7 +262,7 @@ const ProductCard = ({ item, type = "product" }) => {
                         }}
                       >
                         In Stock
-                      </Box>
+                      </Card>
                     </Box>
 
                     <Button
