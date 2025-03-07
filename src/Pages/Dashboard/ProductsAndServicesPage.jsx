@@ -18,7 +18,6 @@ import HandymanIcon from "@mui/icons-material/Handyman";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import { fetchProducts, fetchServices } from "../../api/api";
 import { BlinkBlur } from "react-loading-indicators";
-// Import our optimized components
 import ProductCard from "./ProductCard";
 import AddProductServiceForms from "./AddProductServiceForms";
 
@@ -28,28 +27,7 @@ const boxStyle = {
   bgcolor: "background.paper",
   mt: 1,
 };
-// Styles
-const boxStyle = {
-  width: "100%",
-  bgcolor: "background.paper",
-  mt: 1,
-};
 
-const buttonStyle = {
-  width: "100%",
-  minWidth: "140px",
-  maxWidth: "160px",
-  whiteSpace: "nowrap",
-  textTransform: "none",
-  borderRadius: "25px",
-  fontSize: { xs: "0.7rem", sm: "0.8rem", md: "0.85rem" },
-  fontWeight: "bold",
-  background: "linear-gradient(135deg, #007bff 30%, #0056b3 90%)",
-  color: "#fff",
-  "&:hover": {
-    background: "linear-gradient(135deg, #0056b3 30%, #004494 90%)",
-  },
-};
 const buttonStyle = {
   width: "100%",
   minWidth: "140px",
@@ -80,10 +58,6 @@ export default function ProductsAndServicesPage() {
   const [selectModalOpen, setSelectModalOpen] = React.useState(false);
   const [productModalOpen, setProductModalOpen] = React.useState(false);
   const [serviceModalOpen, setServiceModalOpen] = React.useState(false);
-  // Modal states
-  const [selectModalOpen, setSelectModalOpen] = React.useState(false);
-  const [productModalOpen, setProductModalOpen] = React.useState(false);
-  const [serviceModalOpen, setServiceModalOpen] = React.useState(false);
 
   // Snackbar states
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
@@ -103,21 +77,7 @@ export default function ProductsAndServicesPage() {
       }
     }
   }, []);
-  // Check if user is a seller
-  React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        setSeller(decodedToken.role);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-        setSeller("");
-      }
-    }
-  }, []);
 
-  // Fetch products and services
   // Fetch products and services
   React.useEffect(() => {
     const getData = async () => {
@@ -125,78 +85,23 @@ export default function ProductsAndServicesPage() {
       try {
         const productsResponse = await fetchProducts();
         const servicesResponse = await fetchServices();
-        // Ensure we're setting arrays for both products and services
         const productsData = productsResponse?.data?.products || [];
 
-        // Handle the nested array structure properly
         let servicesData = [];
         if (servicesResponse?.data?.data) {
           if (
             Array.isArray(servicesResponse?.data?.data) &&
             servicesResponse?.data?.data.length > 0
           ) {
-            // Check if the first element is an array (as shown in your data structure)
             if (Array.isArray(servicesResponse?.data?.data[0])) {
               servicesData = servicesResponse?.data?.data[0];
-              console.log(servicesData);
             } else {
-              // Handle case where it's a flat array of services
               servicesData = servicesResponse?.data?.data;
             }
           } else if (typeof servicesResponse?.data?.data === "object") {
-            // Handle object structure if needed
             servicesData = Object.values(servicesResponse.data);
           }
         }
-
-        // Remove console logs for production
-        // console.log("Products data:", productsData);
-        // console.log("Services data:", servicesData);
-
-        setProducts(productsData);
-        setServices(servicesData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  // Fetch products and services
-  // Fetch products and services
-  React.useEffect(() => {
-    const getData = async () => {
-      setLoading(true);
-      try {
-        const productsResponse = await fetchProducts();
-        const servicesResponse = await fetchServices();
-        // Ensure we're setting arrays for both products and services
-        const productsData = productsResponse?.data?.products || [];
-
-        // Handle the nested array structure properly
-        let servicesData = [];
-        if (servicesResponse?.data?.data) {
-          if (
-            Array.isArray(servicesResponse?.data?.data) &&
-            servicesResponse?.data?.data.length > 0
-          ) {
-            // Check if the first element is an array (as shown in your data structure)
-            if (Array.isArray(servicesResponse?.data?.data[0])) {
-              servicesData = servicesResponse?.data?.data[0];
-              console.log(servicesData);
-            } else {
-              // Handle case where it's a flat array of services
-              servicesData = servicesResponse?.data?.data;
-            }
-          } else if (typeof servicesResponse?.data?.data === "object") {
-            // Handle object structure if needed
-            servicesData = Object.values(servicesResponse.data);
-          }
-        }
-
-        // Remove console logs for production
-        // console.log("Products data:", productsData);
-        // console.log("Services data:", servicesData);
 
         setProducts(productsData);
         setServices(servicesData);
@@ -210,14 +115,7 @@ export default function ProductsAndServicesPage() {
 
     getData();
   }, []);
-    getData();
-  }, []);
 
-  // Event handlers
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-    setBrandFilter("");
-  };
   // Event handlers
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -226,14 +124,7 @@ export default function ProductsAndServicesPage() {
 
   const handleOpenSelectModal = () => setSelectModalOpen(true);
   const handleCloseSelectModal = () => setSelectModalOpen(false);
-  const handleOpenSelectModal = () => setSelectModalOpen(true);
-  const handleCloseSelectModal = () => setSelectModalOpen(false);
 
-  const handleOpenFormModal = (type) => {
-    setSelectModalOpen(false);
-    if (type === "product") setProductModalOpen(true);
-    else setServiceModalOpen(true);
-  };
   const handleOpenFormModal = (type) => {
     setSelectModalOpen(false);
     if (type === "product") setProductModalOpen(true);
@@ -243,20 +134,11 @@ export default function ProductsAndServicesPage() {
   const handleCloseProductModal = () => {
     setProductModalOpen(false);
   };
-  const handleCloseProductModal = () => {
-    setProductModalOpen(false);
-  };
 
   const handleCloseServiceModal = () => {
     setServiceModalOpen(false);
   };
-  const handleCloseServiceModal = () => {
-    setServiceModalOpen(false);
-  };
 
-  const handleBrandFilterChange = (brand) => {
-    setBrandFilter(brand === brandFilter ? "" : brand);
-  };
   const handleBrandFilterChange = (brand) => {
     setBrandFilter(brand === brandFilter ? "" : brand);
   };
@@ -316,25 +198,7 @@ export default function ProductsAndServicesPage() {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays <= 2;
   };
-  const isRecent = (date) => {
-    if (!date) return false;
-    const now = new Date();
-    const postedDate = new Date(date);
-    const diffTime = Math.abs(now - postedDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays <= 2;
-  };
 
-  // Ensure products is an array before filtering
-  const productsArray = Array.isArray(products) ? products : [];
-  const filteredProducts = productsArray.filter((product) => {
-    if (!product) return false;
-    if (brandFilter === "Brand New" && product.brand !== "1") return false;
-    if (brandFilter === "Second Hand" && product.brand !== "2") return false;
-    if (brandFilter === "New Product" && !isRecent(product.createdAt))
-      return false;
-    return true;
-  });
   // Ensure products is an array before filtering
   const productsArray = Array.isArray(products) ? products : [];
   const filteredProducts = productsArray.filter((product) => {
@@ -357,28 +221,7 @@ export default function ProductsAndServicesPage() {
 
   // Dynamic filters based on active tab
   const filters = getFilters();
-  // Ensure services is an array before filtering
-  const servicesArray = Array.isArray(services) ? services : [];
-  const filteredServices = servicesArray.filter((service) => {
-    if (!service) return false;
-    if (brandFilter === "New Service" && !isRecent(service.createdAt))
-      return false;
-    return true;
-  });
 
-  // Dynamic filters based on active tab
-  const filters = getFilters();
-
-  // Error handling
-  if (error) {
-    return (
-      <Box sx={{ p: 3, textAlign: "center" }}>
-        <Typography variant="h6" color="error">
-          Error loading products and services: {error.message}
-        </Typography>
-      </Box>
-    );
-  }
   // Error handling
   if (error) {
     return (
@@ -428,7 +271,7 @@ export default function ProductsAndServicesPage() {
 
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <Atom color="#3977cf" size="large" text="Waiting...." textColor="" />
+          <BlinkBlur color="#5ea7d9" size="medium" text="" textColor="" />
         </Box>
       ) : (
         <>
@@ -441,8 +284,8 @@ export default function ProductsAndServicesPage() {
               {activeTab === 0
                 ? "products or services"
                 : activeTab === 1
-                  ? "products"
-                  : "services"}{" "}
+                ? "products"
+                : "services"}{" "}
               available
             </Typography>
           ) : (
@@ -465,12 +308,7 @@ export default function ProductsAndServicesPage() {
                           type={
                             item.price !== undefined ? "product" : "service"
                           }
-                          item={item}
-                          type={
-                            item.price !== undefined ? "product" : "service"
-                          }
                         />
-                      </Box>
                       </Box>
                     </Grid>
                   )
@@ -509,42 +347,6 @@ export default function ProductsAndServicesPage() {
           )}
         </>
       )}
-                  )
-                )}
-              {activeTab === 1 &&
-                filteredProducts.map((product, index) => (
-                  <Grid
-                    item
-                    mt={4}
-                    px={0.5}
-                    xs={6}
-                    sm={6}
-                    md={4}
-                    lg={2}
-                    key={product._id || `product-${index}`}
-                  >
-                    <ProductCard item={product} type="product" />
-                  </Grid>
-                ))}
-              {activeTab === 2 &&
-                filteredServices.map((service, index) => (
-                  <Grid
-                    item
-                    mt={4}
-                    px={0.5}
-                    xs={6}
-                    sm={6}
-                    md={4}
-                    lg={3}
-                    key={service._id || `service-${index}`}
-                  >
-                    <ProductCard item={service} type="service" />
-                  </Grid>
-                ))}
-            </Grid>
-          )}
-        </>
-      )}
 
       {/* Forms Component */}
       <AddProductServiceForms
@@ -570,15 +372,12 @@ export default function ProductsAndServicesPage() {
                   Array.isArray(servicesResponse?.data?.data) &&
                   servicesResponse?.data?.data.length > 0
                 ) {
-                  // Check if the first element is an array (as shown in your data structure)
                   if (Array.isArray(servicesResponse?.data?.data[0])) {
                     servicesData = servicesResponse?.data?.data[0];
                   } else {
-                    // Handle case where it's a flat array of services
                     servicesData = servicesResponse?.data?.data;
                   }
                 } else if (typeof servicesResponse?.data?.data === "object") {
-                  // Handle object structure if needed
                   servicesData = Object.values(servicesResponse?.data?.data);
                 }
               }
@@ -595,70 +394,6 @@ export default function ProductsAndServicesPage() {
             });
         }}
       />
-      {/* Forms Component */}
-      <AddProductServiceForms
-        selectModalOpen={selectModalOpen}
-        productModalOpen={productModalOpen}
-        serviceModalOpen={serviceModalOpen}
-        handleCloseSelectModal={handleCloseSelectModal}
-        handleCloseProductModal={handleCloseProductModal}
-        handleCloseServiceModal={handleCloseServiceModal}
-        handleOpenFormModal={handleOpenFormModal}
-        setSnackbarMessage={setSnackbarMessage}
-        setSnackbarSeverity={setSnackbarSeverity}
-        setSnackbarOpen={setSnackbarOpen}
-        refreshData={() => {
-          setLoading(true);
-          Promise.all([fetchProducts(), fetchServices()])
-            .then(([productsResponse, servicesResponse]) => {
-              const productsData = productsResponse?.data?.products || [];
-
-              let servicesData = [];
-              if (servicesResponse?.data?.data) {
-                if (
-                  Array.isArray(servicesResponse?.data?.data) &&
-                  servicesResponse?.data?.data.length > 0
-                ) {
-                  // Check if the first element is an array (as shown in your data structure)
-                  if (Array.isArray(servicesResponse?.data?.data[0])) {
-                    servicesData = servicesResponse?.data?.data[0];
-                  } else {
-                    // Handle case where it's a flat array of services
-                    servicesData = servicesResponse?.data?.data;
-                  }
-                } else if (typeof servicesResponse?.data?.data === "object") {
-                  // Handle object structure if needed
-                  servicesData = Object.values(servicesResponse?.data?.data);
-                }
-              }
-
-              setProducts(productsData);
-              setServices(servicesData);
-            })
-            .catch((error) => {
-              console.error("Error refreshing data:", error);
-              setError(error);
-            })
-            .finally(() => {
-              setLoading(false);
-            });
-        }}
-      />
-
-      {/* Notifications */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-      >
-        <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity={snackbarSeverity}
-          sx={{ width: "100%" }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 }
