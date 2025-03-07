@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "https://maseno-server-cfelx7ww0-eugines-projects-3759cba1.vercel.app/api/";
+
+const BASE_URL = "https://maseno-server-cfelx7ww0-eugines-projects-3759cba1.vercel.app/api
+
 
 // Create Axios instance
 const api = axios.create({
