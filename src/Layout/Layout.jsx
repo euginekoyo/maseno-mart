@@ -10,6 +10,7 @@ import {
   TextField,
   useMediaQuery,
   Box,
+  Chip,
 } from "@mui/material";
 import SearchButton from "../components/searchButton";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -170,11 +171,18 @@ function Layout() {
   function CustomAppTitle() {
     return (
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography sx={{ fontSize: { xs: "0.95rem", lg: "1.5rem" } }}>
-          MasenoMart
-        </Typography>
-        <Tooltip title="Connected to production">
-          <CheckCircleIcon color="primary" fontSize="small" />
+        {/* Logo inside a button */}
+       
+        {/* Tooltip with check icon */}
+        <Tooltip title="maseno Mart">
+          <Link to={"/"}>
+        <img
+          src="src/assets/logo.png"
+          alt="Company Logo"
+          style={{ width: 80, height: 60 }}
+        />
+          </Link>
+
         </Tooltip>
       </Stack>
     );
@@ -195,9 +203,6 @@ function Layout() {
     >
       <Box my={2.5} mx={1.5} width={365}>
         {isMobile && <SearchButton />}
-      </Box>
-      <Box>
-        <SimpleBottomNavigation />
       </Box>
       <Outlet />
     </DashboardLayout>

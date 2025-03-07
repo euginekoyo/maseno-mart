@@ -8,13 +8,13 @@ import BuildIcon from "@mui/icons-material/Build";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Link } from "react-router-dom";
+import { PersonStanding } from "lucide-react";
 
 export default function SimpleBottomNavigation() {
   const [value, setValue] = React.useState(0);
 
   return (
     <>
-     
       {/* Fixed Bottom Navigation */}
       <Box
         sx={{
@@ -51,7 +51,9 @@ export default function SimpleBottomNavigation() {
           {/* Centered Add Button */}
           <BottomNavigationAction
             label="Add"
-            icon={<AddCircleIcon sx={{ fontSize: 40, color: "primary.main" }} />}
+            icon={
+              <AddCircleIcon sx={{ fontSize: 40, color: "primary.main" }} />
+            }
             sx={{ position: "relative", top: -10 }} // Slightly lifted
           />
           <BottomNavigationAction
@@ -60,7 +62,12 @@ export default function SimpleBottomNavigation() {
             label="Services"
             icon={<BuildIcon />}
           />
-          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+          <BottomNavigationAction
+            component={Link}
+            to={"/profile"}
+            label="profile"
+            icon={<PersonStanding />}
+          />
         </BottomNavigation>
       </Box>
     </>

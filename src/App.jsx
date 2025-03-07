@@ -20,6 +20,7 @@ import {
   Computer,
 } from "lucide-react";
 import { jwtDecode } from "jwt-decode"; // Fixed import statement
+import SimpleBottomNavigation from "./components/SimpleBottomNavigation";
 
 const Navigation = [
   {
@@ -44,37 +45,37 @@ const Navigation = [
         segment: "phone",
         title: "Phone & Accessories",
         icon: <MonitorSmartphone color="#c95454" />,
-        path: "/phone",
+        path: "/products/phone",
       },
       {
         segment: "appliance",
         title: "Appliance",
         icon: <Unplug color="#c95454" />,
-        path: "/appliance",
+        path: "/products/appliance",
       },
       {
         segment: "clothes",
         title: "Clothes",
         icon: <Shirt color="#c95454" />,
-        path: "/clothes",
+        path: "/products/clothes",
       },
       {
         segment: "bags",
         title: "Bags",
         icon: <BriefcaseBusiness color="#c95454" />,
-        path: "/bags",
+        path: "/products/bags",
       },
       {
         segment: "homeware",
         title: "Home & Kitchen",
         icon: <CookingPot color="#c95454" />,
-        path: "/homeware",
+        path: "/products/homeware",
       },
       {
         segment: "shoes",
         title: "Shoes",
         icon: <Footprints color="#c95454" />,
-        path: "/shoes",
+        path: "/products/shoes",
       },
     ],
   },
@@ -94,38 +95,43 @@ const Navigation = [
         segment: "photography",
         title: "Photography",
         icon: <Aperture color="#c95454" />,
-        path: "/photography",
+        path: "/services/photography",
       },
       {
         segment: "hairdesign",
         title: "Hair Design",
         icon: <Unlink color="#c95454" />,
-        path: "/hairdesign",
+        path: "/services/hairdesign",
       },
       {
         segment: "gaming",
         title: "Gaming",
         icon: <Gamepad2 color="#c95454" />,
-        path: "/gaming",
+        path: "/services/gaming",
       },
       {
         segment: "bikehire",
         title: "Bike Hire",
         icon: <Bike color="#c95454" />,
-        path: "/bikehire",
+        path: "/services/bikehire",
       }, // Fixed capitalization
       {
         segment: "cyberservices",
         title: "Cyber Services",
         icon: <Computer color="#c95454" />,
-        path: "/cyberservices",
+        path: "/services/cyberservices",
       },
     ],
+  },
+  {
+    segment: "profile",
+    title: "my profile",
+    icon: <Computer color="#c95454" />,
+    path: "/profile",
   },
 ];
 
 function App() {
- 
   const [session, setSession] = React.useState({
     user: {
       name: "User",

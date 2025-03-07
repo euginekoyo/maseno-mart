@@ -5,84 +5,65 @@ import { Carousel } from "react-bootstrap";
 const CarouselComponent = () => {
   return (
     <div style={{ maxWidth: "90%", paddingTop: "10px" }}>
-      <Box sx={{ ml: { lg: 12, xs:4} }}>
+      <Box sx={{ ml: { lg: 12, xs: 4 } }}>
         <Carousel>
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="/src/assets/jersey.jpg"
+              src="/src/assets/img3.png"
               alt="First slide"
               style={{
-                height: "250px",
-                objectFit: "cover",
+                height: { lg: "100%" },
+                width: "100%",
+                objectFit: "fit",
                 borderRadius: "15px", // 👈 Rounded corners
                 boxShadow: "0 4px 8px rgba(0, 128, 0, 0.3)", // 👈 Soft shadow
               }}
             />
-            <Carousel.Caption>
-              <h5
-                style={{
-                  background: "linear-gradient(to right, #006400, #008000",
-                  borderRadius: "10px",
-                  padding: "5px",
-                  color: "#fff",
-                }}
-              >
-                Print @ a Comrade Price
-              </h5>
-            </Carousel.Caption>
           </Carousel.Item>
 
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="/src/assets/c.jpg"
+              src="/src/assets/img2.png"
               alt="Second slide"
               style={{
-                height: "250px",
-                objectFit: "cover",
+                height: { lg: "100%" },
+                width: "100%",
+                objectFit: "fit",
                 borderRadius: "15px",
                 boxShadow: "0 4px 8px rgba(0, 128, 0, 0.3)",
               }}
             />
-            <Carousel.Caption>
-              <h5
-                style={{
-                  background: "linear-gradient(to right, #006400, #008000)",
-                  borderRadius: "10px",
-                  padding: "5px",
-                  color: "fff",
-                }}
-              >
-                Become a Seller Today
-              </h5>
-            </Carousel.Caption>
           </Carousel.Item>
 
           <Carousel.Item>
             <img
               className="d-block w-100"
-              src="/src/assets/c.jpg"
+              src="/src/assets/img4.jpg"
               alt="Third slide"
               style={{
-                height: "250px",
+                height: { lg: "100%" },
+                width: "100%",
                 objectFit: "cover",
                 borderRadius: "15px",
                 boxShadow: "0 4px 8px rgba(0, 0128 0, 0.3)",
               }}
             />
-            <Carousel.Caption>
-              <h5
+            <Carousel.Item>
+              <img
+                className="d-block w-100"
+                src="/src/assets/img7.png"
+                alt="Third slide"
                 style={{
-                  background: "linear-gradient(to right, #006400, #008000)",
-                  borderRadius: "10px",
-                  padding: "5px",
-                  color: "#fff"
+                  height: { lg: "100%" },
+                  width: "100%",
+                  objectFit: "cover",
+                  borderRadius: "15px",
+                  boxShadow: "0 4px 8px rgba(0, 0128 0, 0.3)",
                 }}
-              >
-                Market your Services
-              </h5>
-            </Carousel.Caption>
+              />
+            </Carousel.Item>
           </Carousel.Item>
         </Carousel>
       </Box>

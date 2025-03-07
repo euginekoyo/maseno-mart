@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import GoogleIcon from "@mui/icons-material/Google";
 import { loginUser } from "../api/api"; // Ensure this function correctly sends login requests
 import Swal from "sweetalert2";
-
+import { Box, CardMedia } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -41,7 +43,8 @@ function Login() {
         position: "top",
         icon: "error",
         title:
-          error.response?.data?.message || "Login failed. Check your credentials.",
+          error.response?.data?.message ||
+          "Login failed. Check your credentials.",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
@@ -51,15 +54,32 @@ function Login() {
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="card shadow-lg p-4" style={{ width: "400px", borderRadius: "15px" }}>
+      <div
+        className="card shadow-lg p-4"
+        style={{ width: "400px", borderRadius: "15px" }}
+      >
         <div className="d-flex justify-content-center mb-4">
-          <h4>Maseno-Mart</h4>
+          <Box mx={"auto"}>
+            <CardMedia
+              component="img"
+              sx={{
+                width: "100%",
+                borderRadius: "8px 8px 0 0",
+                height: { lg: "200px", xs: "80px" },
+                objectFit: "cover",
+              }}
+              image={"/src/assets/logo.png"}
+              alt={"maseno mart"}
+            />
+          </Box>
         </div>
 
         {/* Login Form */}
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
             <input
               type="email"
               className="form-control"
@@ -72,8 +92,10 @@ function Login() {
           </div>
 
           <div className="mb-3 position-relative">
-            <label htmlFor="password" className="form-label">Password</label>
-            <div className="d-flex">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <div className="position-relative">
               <input
                 type={passwordVisible ? "text" : "password"}
                 className="form-control"
@@ -82,13 +104,19 @@ function Login() {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                aria-label="Enter your password"
+                style={{ paddingRight: "40px" }} // Add padding to prevent text overlap
               />
               <button
                 type="button"
-                className="btn btn-link p-0 ms-2"
+                className="btn btn-link p-0"
                 onClick={togglePasswordVisibility}
                 aria-label="Toggle Password Visibility"
                 style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
                   background: "none",
                   border: "none",
                   color: "#007bff",
@@ -96,7 +124,7 @@ function Login() {
                   fontSize: "1rem",
                 }}
               >
-                {passwordVisible ? "Hide" : "Show"}
+                {passwordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
               </button>
             </div>
           </div>
@@ -113,7 +141,9 @@ function Login() {
             </label>
           </div>
 
-          <button type="submit" className="btn btn-dark w-100">Login</button>
+          <button type="submit" className="btn btn-dark w-100">
+            Login
+          </button>
         </form>
 
         {/* Google login */}
@@ -127,7 +157,9 @@ function Login() {
         <div className="text-center mt-3">
           <p>
             Don't have an account?{" "}
-            <a href="/signup" className="text-decoration-underline">Signup</a>
+            <a href="/signup" className="text-decoration-underline">
+              Signup
+            </a>
           </p>
         </div>
       </div>

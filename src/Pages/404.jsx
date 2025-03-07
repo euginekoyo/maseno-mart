@@ -1,4 +1,12 @@
-import { Divider, Stack, Typography, Box, IconButton } from "@mui/material";
+import {
+  Divider,
+  Stack,
+  Typography,
+  Box,
+  IconButton,
+  Card,
+  CardMedia,
+} from "@mui/material";
 import { Bold, SmileIcon } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,14 +19,25 @@ function Page404() {
         <Typography
           fontFamily={"monospace"}
           sx={{ fontSize: { lg: "5rem", xs: "3rem" }, mx: { xs: 14, lg: 20 } }}
-        >
-          404
-        </Typography>
+        ></Typography>
+        <Box mx={"auto"}>
+          <CardMedia
+            component="img"
+            sx={{
+              width: "100%",
+              borderRadius: "8px 8px 0 0",
+              height: { lg: "200px", xs: "150px" },
+              objectFit: "cover",
+            }}
+            image={"/src/assets/logo.png"}
+            alt={"maseno mart"}
+          />
+        </Box>
         <Typography
           fontFamily={"monospace"}
           sx={{ fontSize: { xs: "1rem" }, mx: { xs: 10, lg: 20 } }}
         >
-          PAGE NOT FOUND
+          PAGE COMING SOON
         </Typography>
         <Divider
           sx={{
@@ -47,10 +66,10 @@ function Page404() {
             display: "flex",
             flexDirection: "column",
           }}
-          onClick={()=>navigate("/")}
+          onClick={() => navigate("/")}
         >
-          <SmileIcon color="red" size={80} />
-          <Typography color="red" fontFamily={"monospace"}>
+          <SmileIcon color="yellow" size={80} />
+          <Typography color="blank" fontFamily={"monospace"}>
             Take me home
           </Typography>
         </IconButton>
