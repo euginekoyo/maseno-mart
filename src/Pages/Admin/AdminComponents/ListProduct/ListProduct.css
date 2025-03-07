@@ -1,0 +1,55 @@
+/* Add this CSS to enhance the styling of the table, pagination, and other elements */
+.table-striped tbody tr:nth-child(odd) {
+  background-color: #f9f9f9; /* Light striping for rows */
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1; /* Hover effect for rows */
+}
+
+.thead-dark th {
+  background-color: #343a40;
+  color: white;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.sticky-top {
+  top: 20px; /* Offset sticky search bar */
+  z-index: 1050;
+}
+
+.table-responsive {
+  max-height: 500px; /* Make table scrollable */
+  overflow-y: auto;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  padding: 1rem;
+}
+
+h4 {
+  font-weight: bold;
+}
