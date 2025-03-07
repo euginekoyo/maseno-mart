@@ -83,8 +83,7 @@ function Services() {
     const getData = async () => {
       try {
         const servicesResponse = await fetchServices({ page, limit });
-        console.log(servicesResponse);
-        console.log("Services Response:", servicesResponse.data.data);
+      
         setTotalPages(servicesResponse?.data?.data.totalPages);
         let extractedServices = [];
         if (servicesResponse) {

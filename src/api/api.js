@@ -41,11 +41,9 @@ export const signupUser = async (userData) => {
 export const loginUser = async (credentials) => {
   try {
     const response = await api.post("/auth/login", credentials);
-    console.log("Login API Response:", response.data); // ✅ Debug response
 
     if (response.data.token) {
       setAuthToken(response.data.token);
-      // console.log("User Role from API:", response.data.role); // ✅ Log role
       localStorage.setItem("role", response.data.role); // ✅ Store role
     }
 
