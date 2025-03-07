@@ -196,7 +196,9 @@ function Layout() {
       <Box my={2.5} mx={1.5} width={365}>
         {isMobile && <SearchButton />}
       </Box>
-    
+      <Box>
+        <SimpleBottomNavigation />
+      </Box>
       <Outlet />
     </DashboardLayout>
   );
