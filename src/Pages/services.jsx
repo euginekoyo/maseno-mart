@@ -22,6 +22,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import { fetchServices } from "../api/api";
+import { motion } from "framer-motion";
 import {
   Camera,
   Bath,
@@ -43,8 +44,8 @@ const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
 
 function Services() {
   const [value, setValue] = React.useState(0);
-
   const [services, setServices] = React.useState([]);
+  const [filteredServices, setFilteredServices] = React.useState([]);
   const [expandedItemId, setExpandedItemId] = React.useState(null);
   const [error, setError] = React.useState(null);
 
@@ -76,6 +77,7 @@ function Services() {
 
         console.log("Extracted Services:", extractedServices);
         setServices(extractedServices);
+        setFilteredServices(extractedServices);
       } catch (error) {
         console.error("Error fetching data:", error);
         setError(error);
@@ -87,6 +89,19 @@ function Services() {
 
   const handleExpandClick = (id) => {
     setExpandedItemId(expandedItemId === id ? null : id);
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+    if (newValue === 0) {
+      setFilteredServices(services);
+    } else {
+      const categories = ["All", "1", "2", "3", "4", "5", "6"];
+      const selectedCategory = categories[newValue];
+      setFilteredServices(
+        services.filter((service) => service.category === selectedCategory)
+      );
+    }
   };
 
   return (
@@ -103,7 +118,7 @@ function Services() {
           >
             <Tabs
               value={value}
-              onChange={(event, newValue) => setValue(newValue)}
+              onChange={handleTabChange}
               variant="scrollable"
               scrollButtons="auto"
               allowScrollButtonsMobile
@@ -124,11 +139,11 @@ function Services() {
             >
               <Tab label="All" icon={<Bath size={20} />} />
               <Tab label="Photography" icon={<Camera size={20} />} />
-              <Tab label="Fast Food" icon={<Utensils size={20} />} />
               <Tab label="Hair Design" icon={<FlameKindling size={20} />} />
               <Tab label="Gaming" icon={<Gamepad2 size={20} />} />
               <Tab label="Bike Hire" icon={<Bike size={20} />} />
               <Tab label="Cyber Services" icon={<Computer size={20} />} />
+              <Tab label="Fast Foods" icon={<Utensils size={20} />} />
             </Tabs>
           </Box>
         </Box>
@@ -136,194 +151,201 @@ function Services() {
       <Box></Box>
       <Box>
         <Grid container spacing={2}>
-          {services.length === 0 ? (
+          {filteredServices.length === 0 ? (
             <Grid item xs={12}>
               <Typography variant="h6" color="textSecondary" align="center">
                 No services available
               </Typography>
             </Grid>
           ) : (
-            services.map((item) => (
-              <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
-                <Box
-                  sx={{
-                    maxWidth: 350,
-                    mx: "auto",
-                    borderRadius: 2,
-                    mb: 2,
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
+            filteredServices.map((item) => (
+              <Grid item xs={6} sm={6} md={4} lg={2} key={item._id}>
+                <motion.div
+                whileHover={{scale:1.05}}
                 >
                   <Box
                     sx={{
-                      position: "relative",
-                      flex: "0 0 auto",
-                      bgcolor: "#F1F3F4",
+                      maxWidth: 350,
+                      mx: "auto",
                       borderRadius: 2,
+                      mb: 2,
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
-                  >
-                    <CardMedia
-                      component="img"
-                      sx={{
-                        width: "100%",
-                        borderRadius: 2,
-                        height: { lg: "200px", xs: "150px" },
-                        objectFit: "cover",
-                      }}
-                      image={
-                        item.images || item.image || "/src/assets/jersey.jpg"
-                      }
-                      alt={item.title || item.name}
-                    />
-                  </Box>
-                  <CardContent sx={{ padding: "5px 10px", flex: "1 0 auto" }}>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                        height: 40,
-                      }}
-                    >
-                      {item.name} - {"Service Available"}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      fontWeight={600}
-                      sx={{ mt: 1, color: "primary.main" }}
-                    >
-                      KSh {item.price}
-                    </Typography>
-                  </CardContent>
-                  <CardActions
-                    disableSpacing
-                    sx={{
-                      padding: "8px 11px",
-                      mt: "auto",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Box>
-                      <IconButton
-                        aria-label="add to favorites"
-                        color="primary"
-                        size="small"
-                      >
-                        <FavoriteIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="share"
-                        color="primary"
-                        size="small"
-                      >
-                        <ShareIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="whatsapp"
-                        color="primary"
-                        size="small"
-                        onClick={() =>
-                          window.open(
-                            `https://wa.me/${item.phoneNumber || "254712345678"}`,
-                            "_blank"
-                          )
-                        }
-                      >
-                        <WhatsAppIcon />
-                      </IconButton>
-                    </Box>
-                    <ExpandMore
-                      expand={expandedItemId === item._id}
-                      onClick={() => handleExpandClick(item._id)}
-                      aria-expanded={expandedItemId === item._id}
-                      aria-label="show more"
-                      color="primary"
-                      size="small"
-                    >
-                      <ExpandMoreIcon />
-                    </ExpandMore>
-                  </CardActions>
-                  <Dialog
-                    open={expandedItemId === item._id}
-                    onClose={() => handleExpandClick(item._id)}
-                    maxWidth="sm"
-                    fullWidth
                   >
                     <Box
                       sx={{
-                        p: 3,
-                        borderRadius: 3,
-                        bgcolor: "background.paper",
                         position: "relative",
+                        flex: "0 0 auto",
+                        bgcolor: "#F1F3F4",
+                        borderRadius: 2,
                       }}
                     >
-                      <IconButton
-                        onClick={() => handleExpandClick(item._id)}
-                        sx={{ position: "absolute", right: 8, top: 8 }}
+                      <CardMedia
+                        component="img"
+                        sx={{
+                          width: "100%",
+                          borderRadius: 2,
+                          height: { lg: "200px", xs: "150px" },
+                          objectFit: "cover",
+                        }}
+                        image={
+                          item.images || item.image || "/src/assets/jersey.jpg"
+                        }
+                        alt={item.title || item.name}
+                      />
+                    </Box>
+                    <CardContent sx={{ padding: "5px 10px", flex: "1 0 auto" }}>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          height: 40,
+                        }}
                       >
-                        <CloseIcon />
-                      </IconButton>
-                      <Typography paragraph sx={{ pl: 2, fontWeight: "bold" }}>
-                        Details:
+                        {item.name} - {"Service Available"}
                       </Typography>
+                      <Typography
+                        variant="h6"
+                        fontWeight={600}
+                        sx={{ mt: 1, color: "primary.main" }}
+                      >
+                        KSh {item.price}
+                      </Typography>
+                    </CardContent>
+                    <CardActions
+                      disableSpacing
+                      sx={{
+                        padding: "8px 11px",
+                        mt: "auto",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box>
+                        <IconButton
+                          aria-label="add to favorites"
+                          color="primary"
+                          size="small"
+                        >
+                          <FavoriteIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="share"
+                          color="primary"
+                          size="small"
+                        >
+                          <ShareIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="whatsapp"
+                          color="primary"
+                          size="small"
+                          onClick={() =>
+                            window.open(
+                              `https://wa.me/${item.phoneNumber || "254712345678"}`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          <WhatsAppIcon />
+                        </IconButton>
+                      </Box>
+                      <ExpandMore
+                        expand={expandedItemId === item._id}
+                        onClick={() => handleExpandClick(item._id)}
+                        aria-expanded={expandedItemId === item._id}
+                        aria-label="show more"
+                        color="primary"
+                        size="small"
+                      >
+                        <ExpandMoreIcon />
+                      </ExpandMore>
+                    </CardActions>
+                    <Dialog
+                      open={expandedItemId === item._id}
+                      onClose={() => handleExpandClick(item._id)}
+                      maxWidth="sm"
+                      fullWidth
+                    >
                       <Box
                         sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 2,
-                          pl: 2,
+                          p: 3,
+                          borderRadius: 3,
+                          bgcolor: "background.paper",
+                          position: "relative",
                         }}
                       >
-                        <Avatar
-                          sx={{ bgcolor: red[600], width: 40, height: 40 }}
+                        <IconButton
+                          onClick={() => handleExpandClick(item._id)}
+                          sx={{ position: "absolute", right: 8, top: 8 }}
                         >
-                          {(item.title || item.name)?.[0]?.toUpperCase()}
-                        </Avatar>
-                        <Box>
-                          <Typography variant="subtitle1" fontWeight={600}>
-                            {item.title || item.name}
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            sx={{
-                              fontSize: "0.8rem",
-                              color: "text.secondary",
-                            }}
+                          <CloseIcon />
+                        </IconButton>
+                        <Typography
+                          paragraph
+                          sx={{ pl: 2, fontWeight: "bold" }}
+                        >
+                          Details:
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 2,
+                            pl: 2,
+                          }}
+                        >
+                          <Avatar
+                            sx={{ bgcolor: red[600], width: 40, height: 40 }}
                           >
-                            {new Date().toDateString()}
-                          </Typography>
+                            {(item.title || item.name)?.[0]?.toUpperCase()}
+                          </Avatar>
+                          <Box>
+                            <Typography variant="subtitle1" fontWeight={600}>
+                              {item.title || item.name}
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                fontSize: "0.8rem",
+                                color: "text.secondary",
+                              }}
+                            >
+                              {new Date().toDateString()}
+                            </Typography>
+                          </Box>
                         </Box>
+                        <Typography paragraph sx={{ pl: 2, mt: 2 }}>
+                          {item.description || "No description available."}
+                        </Typography>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          startIcon={<WhatsAppIcon />}
+                          sx={{
+                            mt: 2,
+                            display: "flex",
+                            justifyContent: "center",
+                            mx: "auto",
+                          }}
+                          onClick={() =>
+                            window.open(
+                              `https://wa.me/${item.phoneNumber || "254712345678"}`,
+                              "_blank"
+                            )
+                          }
+                        >
+                          Contact me
+                        </Button>
                       </Box>
-                      <Typography paragraph sx={{ pl: 2, mt: 2 }}>
-                        {item.description || "No description available."}
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        startIcon={<WhatsAppIcon />}
-                        sx={{
-                          mt: 2,
-                          display: "flex",
-                          justifyContent: "center",
-                          mx: "auto",
-                        }}
-                        onClick={() =>
-                          window.open(
-                            `https://wa.me/${item.phoneNumber || "254712345678"}`,
-                            "_blank"
-                          )
-                        }
-                      >
-                        Contact me
-                      </Button>
-                    </Box>
-                  </Dialog>
-                </Box>
+                    </Dialog>
+                  </Box>
+                </motion.div>
               </Grid>
             ))
           )}
