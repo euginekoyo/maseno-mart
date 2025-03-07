@@ -5,10 +5,8 @@ import {
   CardMedia,
   CardContent,
   CardActions,
-  Avatar,
   IconButton,
   Typography,
-  Dialog,
   Box,
   Button,
   Tabs,
@@ -19,17 +17,23 @@ import {
   ListItem,
   ListItemText,
   Chip,
+  BottomNavigation,
+  BottomNavigationAction,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import HomeIcon from "@mui/icons-material/Home";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import BuildIcon from "@mui/icons-material/Build";
+import { Link, useParams } from "react-router-dom";
 import { fetchProducts } from "../api/api";
-import SimpleBottomNavigation from "../components/SimpleBottomNavigation";
+import { BlinkBlur } from "react-loading-indicators";
+import CarouselComponent from "./Dashboard/CarouselComponent";
 
 const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
   marginLeft: "auto",
@@ -39,7 +43,6 @@ const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
   transform: expand ? "rotate(180deg)" : "rotate(0deg)",
 }));
 
-// Styled component for the puller (the visual indicator at the top of the drawer)
 const Puller = styled(Box)(({ theme }) => ({
   width: 30,
   height: 6,
@@ -52,6 +55,7 @@ const Puller = styled(Box)(({ theme }) => ({
 }));
 
 function Products() {
+  const { category } = useParams();
   const [value, setValue] = React.useState(0);
   const [products, setProducts] = React.useState([]);
   const [filteredProducts, setFilteredProducts] = React.useState([]);
@@ -86,17 +90,27 @@ function Products() {
     getData();
   }, []);
 
+  React.useEffect(() => {
+    if (category) {
+      setFilteredProducts(
+        products.filter((product) => product.category === category)
+      );
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [category, products]);
+
   const handleExpandClick = (id) => {
     setExpandedItemId(expandedItemId === id ? null : id);
   };
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
-    if (newValue === 0) {
+    const categories = ["All", "1", "2", "3", "4", "5", "6"];
+    const selectedCategory = categories[newValue];
+    if (selectedCategory === "All") {
       setFilteredProducts(products);
     } else {
-      const categories = ["All", "1", "2", "3", "4", "5", "6"];
-      const selectedCategory = categories[newValue];
       setFilteredProducts(
         products.filter((product) => product.category === selectedCategory)
       );
@@ -132,10 +146,22 @@ function Products() {
     return categories[categoryId] || "Uncategorized";
   };
 
+  const formatPhoneNumber = (phoneNumber) => {
+    const digitsOnly = phoneNumber.replace(/\D/g, "");
+    if (digitsOnly.startsWith("0")) {
+      return `254${digitsOnly.slice(1)}`;
+    }
+    return digitsOnly;
+  };
+
+  const generateWhatsAppLink = (phoneNumber) => {
+    const formattedNumber = formatPhoneNumber(phoneNumber || "254712345678");
+    return `https://wa.me/${formattedNumber}`;
+  };
+
   return (
-    <Box sx={{ paddingBottom: "80px" }}>
-      {" "}
-      {/* Prevent overlap with footer */}
+    <Box my={10}>
+      <CarouselComponent />
       <Box my={4}>
         <Box
           sx={{
@@ -149,6 +175,7 @@ function Products() {
             onChange={handleTabChange}
             variant="scrollable"
             scrollButtons="auto"
+            allowScrollButtonsMobile
             indicatorColor="primary"
             textColor="primary"
             sx={{
@@ -176,15 +203,15 @@ function Products() {
       </Box>
       <Box mx={2}>
         {filteredProducts.length === 0 ? (
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ my: { xs: 20 } }}>
             <Typography variant="h6" color="textSecondary" align="center">
-              No products available
+              <BlinkBlur color="#5ea7d9" size="medium" text="" textColor="" />
             </Typography>
           </Grid>
         ) : (
           <Grid container spacing={2}>
             {filteredProducts.map((item) => (
-              <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
+              <Grid item xs={6} sm={6} md={4} lg={2} key={item._id}>
                 <Box
                   sx={{
                     maxWidth: 350,
@@ -235,7 +262,13 @@ function Products() {
                         height: 40,
                       }}
                     >
-                      {item.name} - {"Service Available"}
+                      {item.title} -{" "}
+                      <Chip
+                        label="in stock"
+                        size="small"
+                        color="primary"
+                        sx={{ fontSize: ".5rem", width: 50, height: 15 }}
+                      />
                     </Typography>
                     <Typography
                       variant="h6"
@@ -269,13 +302,14 @@ function Products() {
                       >
                         <ShareIcon />
                       </IconButton>
+
                       <IconButton
                         aria-label="whatsapp"
-                        color="primary"
+                        color="success"
                         size="small"
                         onClick={() =>
                           window.open(
-                            `https://wa.me/${item.phoneNumber || "254712345678"}`,
+                            generateWhatsAppLink(selectedProduct.phoneNumber),
                             "_blank"
                           )
                         }
@@ -319,6 +353,7 @@ function Products() {
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
             maxHeight: "90vh",
+            zIndex: 1200,
           },
         }}
       >
@@ -451,7 +486,7 @@ function Products() {
                   startIcon={<WhatsAppIcon />}
                   onClick={() =>
                     window.open(
-                      `https://wa.me/${selectedProduct.phoneNumber || "254712345678"}`,
+                      generateWhatsAppLink(selectedProduct.phoneNumber),
                       "_blank"
                     )
                   }
@@ -464,7 +499,55 @@ function Products() {
           )}
         </Box>
       </SwipeableDrawer>
-      <SimpleBottomNavigation />
+      {/* Fixed Bottom Navigation */}
+      <Box
+        sx={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+          zIndex: 1300,
+          backgroundColor: "white",
+          boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.1)",
+          display: { xs: "flex", md: "none" },
+        }}
+      >
+        <BottomNavigation
+          showLabels
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue);
+          }}
+          sx={{ width: "100%" }}
+        >
+          <BottomNavigationAction
+            component={Link}
+            to="/"
+            label="Home"
+            icon={<HomeIcon />}
+          />
+          <BottomNavigationAction
+            component={Link}
+            to="/products"
+            label="Products"
+            icon={<ShoppingCartIcon />}
+          />
+          <BottomNavigationAction
+            label="Add"
+            icon={
+              <AddCircleIcon sx={{ fontSize: 40, color: "primary.main" }} />
+            }
+            sx={{ position: "relative", top: -10 }}
+          />
+          <BottomNavigationAction
+            component={Link}
+            to="/services"
+            label="Services"
+            icon={<BuildIcon />}
+          />
+          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+        </BottomNavigation>
+      </Box>
     </Box>
   );
 }

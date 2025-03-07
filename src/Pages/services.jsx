@@ -20,7 +20,6 @@ import {
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -37,8 +36,17 @@ import {
   Computer,
   FlameKindling,
 } from "lucide-react";
-import SimpleBottomNavigation from "../components/SimpleBottomNavigation";
-
+import BottomNavigation from "@mui/material/BottomNavigation";
+import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import HomeIcon from "@mui/icons-material/Home";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import BuildIcon from "@mui/icons-material/Build";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { Link, useParams } from "react-router-dom";
+import ReactPaginate from "react-paginate";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { BlinkBlur } from "react-loading-indicators";
+import CarouselComponent from "./Dashboard/CarouselComponent";
 const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
   marginLeft: "auto",
   transition: theme.transitions.create("transform", {
@@ -47,7 +55,6 @@ const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
   transform: expand ? "rotate(180deg)" : "rotate(0deg)",
 }));
 
-// Styled component for the puller (the visual indicator at the top of the drawer)
 const Puller = styled(Box)(({ theme }) => ({
   width: 30,
   height: 6,
@@ -58,9 +65,9 @@ const Puller = styled(Box)(({ theme }) => ({
   borderRadius: 3,
   margin: "8px auto",
 }));
-import useMediaQuery from "@mui/material/useMediaQuery";
 
 function Services() {
+  const { category } = useParams();
   const [value, setValue] = React.useState(0);
   const [services, setServices] = React.useState([]);
   const [filteredServices, setFilteredServices] = React.useState([]);
@@ -68,33 +75,36 @@ function Services() {
   const [error, setError] = React.useState(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [selectedService, setSelectedService] = React.useState(null);
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(1);
+  const limit = 10;
 
   React.useEffect(() => {
     const getData = async () => {
       try {
-        const servicesResponse = await fetchServices();
-        console.log("Services Response:", servicesResponse);
-
+        const servicesResponse = await fetchServices({ page, limit });
+        console.log(servicesResponse);
+        console.log("Services Response:", servicesResponse.data.data);
+        setTotalPages(servicesResponse?.data?.data.totalPages);
         let extractedServices = [];
         if (servicesResponse) {
-          if (Array.isArray(servicesResponse)) {
-            extractedServices = servicesResponse.map((service) => ({
+          if (Array.isArray(servicesResponse?.data?.data)) {
+            extractedServices = servicesResponse?.data?.data.map((service) => ({
               ...service,
               title: service.name,
               images: service.image,
             }));
           } else if (
-            servicesResponse.data &&
-            Array.isArray(servicesResponse.data)
+            servicesResponse?.data?.data &&
+            Array.isArray(servicesResponse?.data?.data)
           ) {
-            extractedServices = servicesResponse.data.map((service) => ({
+            extractedServices = servicesResponse?.data?.data.map((service) => ({
               ...service,
               title: service.name,
               images: service.image,
             }));
           }
         }
-
         console.log("Extracted Services:", extractedServices);
         setServices(extractedServices);
         setFilteredServices(extractedServices);
@@ -105,7 +115,18 @@ function Services() {
     };
 
     getData();
-  }, []);
+  }, [page]);
+
+  React.useEffect(() => {
+    if (category) {
+      setFilteredServices(
+        services.filter((service) => service.category === category)
+      );
+    } else {
+      setFilteredServices(services);
+    }
+    setPage(1); // Reset page to 1 when category changes
+  }, [category, services]);
 
   const handleExpandClick = (id, event) => {
     event.stopPropagation();
@@ -114,15 +135,16 @@ function Services() {
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue);
-    if (newValue === 0) {
+    const categories = ["All", "1", "2", "3", "4", "5", "6"];
+    const selectedCategory = categories[newValue];
+    if (selectedCategory === "All") {
       setFilteredServices(services);
     } else {
-      const categories = ["All", "1", "2", "3", "4", "5", "6"];
-      const selectedCategory = categories[newValue];
       setFilteredServices(
         services.filter((service) => service.category === selectedCategory)
       );
     }
+    setPage(1); // Reset page to 1 when tab changes
   };
 
   const handleServiceClick = (service) => {
@@ -166,11 +188,17 @@ function Services() {
     ];
     return categories[categoryId] || "Uncategorized";
   };
+
   const screen = useMediaQuery("(min-width:768px)");
+
+  const handlePageClick = (data) => {
+    setPage(data.selected + 1);
+  };
 
   return (
     <>
       <Box>
+        <CarouselComponent />
         <Box my={4}>
           <Box
             sx={{
@@ -200,24 +228,30 @@ function Services() {
                 },
               }}
             >
-              <Tab label="All" icon={<Bath size={20} />} />
-              <Tab label="Photography" icon={<Camera size={20} />} />
-              <Tab label="Hair Design" icon={<FlameKindling size={20} />} />
-              <Tab label="Gaming" icon={<Gamepad2 size={20} />} />
-              <Tab label="Bike Hire" icon={<Bike size={20} />} />
-              <Tab label="Cyber Services" icon={<Computer size={20} />} />
-              <Tab label="Fast Foods" icon={<Utensils size={20} />} />
+              <Tab label="All" />
+              <Tab label="Photography" />
+              <Tab label="Hair Design" />
+              <Tab label="Gaming" />
+              <Tab label="Bike Hire" />
+              <Tab label="Cyber Services" />
+              <Tab label="Fast Foods" />
             </Tabs>
           </Box>
         </Box>
       </Box>
-      <Box></Box>
       <Box sx={{ px: 2, pb: "80px" }}>
         <Grid container spacing={2}>
           {filteredServices.length === 0 ? (
-            <Grid item xs={12}>
+            <Grid
+              item
+              xs={12}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              sx={{ my: { xs: 20 } }}
+            >
               <Typography variant="h6" color="textSecondary" align="center">
-                No services available
+                <BlinkBlur color="#5ea7d9" size="medium" text="" textColor="" />
               </Typography>
             </Grid>
           ) : (
@@ -328,7 +362,7 @@ function Services() {
                         color="primary"
                         size="small"
                       >
-                        <ExpandMoreIcon />
+                        {/* <ExpandMoreIcon /> */}
                       </ExpandMore>
                     </CardActions>
                   </Box>
@@ -337,8 +371,78 @@ function Services() {
             ))
           )}
         </Grid>
+        {/* Pagination */}
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <ReactPaginate
+            previousLabel={"<<  "}
+            nextLabel={">>"}
+            breakLabel={"..."}
+            pageCount={totalPages}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={3}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination"}
+            activeClassName={"active"}
+            pageClassName={"page-item"}
+            previousClassName={"page-item"}
+            nextClassName={"page-item"}
+            breakClassName={"page-item"}
+            pageLinkClassName={"page-link"}
+            previousLinkClassName={"page-link"}
+            nextLinkClassName={"page-link"}
+            breakLinkClassName={"page-link"}
+          />
+        </Box>
+        {/* Fixed Bottom Navigation */}
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            zIndex: 1300,
+            backgroundColor: "white",
+            boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.1)",
+            display: { xs: "flex", md: "none" },
+          }}
+        >
+          <BottomNavigation
+            showLabels
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            sx={{ width: "100%" }}
+          >
+            <BottomNavigationAction
+              component={Link}
+              to="/"
+              label="Home"
+              icon={<HomeIcon />}
+            />
+            <BottomNavigationAction
+              component={Link}
+              to="/products"
+              label="Products"
+              icon={<ShoppingCartIcon />}
+            />
+            <BottomNavigationAction
+              label="Add"
+              icon={
+                <AddCircleIcon sx={{ fontSize: 40, color: "primary.main" }} />
+              }
+              sx={{ position: "relative", top: -10 }}
+            />
+            <BottomNavigationAction
+              component={Link}
+              to="/services"
+              label="Services"
+              icon={<BuildIcon />}
+            />
+            <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+          </BottomNavigation>
+        </Box>
       </Box>
-
       {/* Swipeable Drawer for Service Details */}
       <SwipeableDrawer
         anchor="bottom"
@@ -355,6 +459,7 @@ function Services() {
             borderTopLeftRadius: 16,
             borderTopRightRadius: 16,
             maxHeight: "90vh",
+            zIndex: 1200,
           },
         }}
       >
@@ -377,7 +482,6 @@ function Services() {
                   <CloseIcon />
                 </IconButton>
               </Box>
-
               {/* Service Header */}
               <Box sx={{ mb: 3 }}>
                 <CardMedia
@@ -396,7 +500,6 @@ function Services() {
                   }
                   alt={selectedService.title || selectedService.name}
                 />
-
                 <Box
                   sx={{ display: "flex", alignItems: "center", mb: 2, gap: 2 }}
                 >
@@ -452,7 +555,7 @@ function Services() {
                         size="small"
                         sx={{
                           width: { lg: 200, xs: 120 },
-                          fontSize: { xs: "0.7rem" }, // Fix fontSize nesting
+                          fontSize: { xs: "0.7rem" },
                         }}
                         fullWidth
                       >
@@ -462,7 +565,6 @@ function Services() {
                   )}
                 </Box>
                 {/* Action Buttons */}
-
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}>
                   <Chip
                     icon={getCategoryIcon(selectedService.category)}
@@ -476,7 +578,6 @@ function Services() {
                     variant="outlined"
                   />
                 </Box>
-
                 <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                   <Rating
                     value={selectedService.rating || 4.5}
@@ -489,7 +590,6 @@ function Services() {
                     {selectedService.reviews || 24} reviews)
                   </Typography>
                 </Box>
-
                 <Typography
                   variant="h5"
                   color="primary.main"
@@ -499,9 +599,7 @@ function Services() {
                   KSh {selectedService.price}
                 </Typography>
               </Box>
-
               <Divider sx={{ mb: 3 }} />
-
               {/* Service Description */}
               <Box sx={{ mb: 3 }}>
                 <Typography variant="h6" gutterBottom>
@@ -516,9 +614,7 @@ function Services() {
                     "This service is provided by professionals with years of experience in the field. We guarantee customer satisfaction and high-quality results. Contact us to book or inquire about specific requirements and availability."}
                 </Typography>
               </Box>
-
               <Divider sx={{ mb: 3 }} />
-
               {/* Service Details */}
               <Box sx={{ mb: 3 }}>
                 <Typography variant="h6" gutterBottom>
@@ -537,7 +633,6 @@ function Services() {
                       </Typography>
                     </Box>
                   </Box>
-
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                     <PersonIcon color="primary" />
                     <Box>
@@ -550,7 +645,6 @@ function Services() {
                       </Typography>
                     </Box>
                   </Box>
-
                   <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                     <LocationOnIcon color="primary" />
                     <Box>
@@ -569,8 +663,6 @@ function Services() {
           )}
         </Box>
       </SwipeableDrawer>
-
-      <SimpleBottomNavigation />
     </>
   );
 }
