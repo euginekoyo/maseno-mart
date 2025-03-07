@@ -13,6 +13,12 @@ import {
   Button,
   Tabs,
   Tab,
+  SwipeableDrawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Chip,
 } from "@mui/material";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -20,6 +26,8 @@ import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CloseIcon from "@mui/icons-material/Close";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { fetchProducts } from "../api/api";
 import SimpleBottomNavigation from "../components/SimpleBottomNavigation";
 
@@ -31,11 +39,25 @@ const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
   transform: expand ? "rotate(180deg)" : "rotate(0deg)",
 }));
 
+// Styled component for the puller (the visual indicator at the top of the drawer)
+const Puller = styled(Box)(({ theme }) => ({
+  width: 30,
+  height: 6,
+  backgroundColor:
+    theme.palette.mode === "light"
+      ? "rgba(0, 0, 0, 0.2)"
+      : "rgba(255, 255, 255, 0.2)",
+  borderRadius: 3,
+  margin: "8px auto",
+}));
+
 function Products() {
   const [value, setValue] = React.useState(0);
   const [products, setProducts] = React.useState([]);
   const [filteredProducts, setFilteredProducts] = React.useState([]);
   const [expandedItemId, setExpandedItemId] = React.useState(null);
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [selectedProduct, setSelectedProduct] = React.useState(null);
 
   React.useEffect(() => {
     const getData = async () => {
@@ -73,12 +95,41 @@ function Products() {
     if (newValue === 0) {
       setFilteredProducts(products);
     } else {
-      const categories = ["All", "1", "2", "3", "4", "5","6"];
+      const categories = ["All", "1", "2", "3", "4", "5", "6"];
       const selectedCategory = categories[newValue];
       setFilteredProducts(
         products.filter((product) => product.category === selectedCategory)
       );
     }
+  };
+
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setDrawerOpen(true);
+  };
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setDrawerOpen(open);
+  };
+
+  const getCategoryName = (categoryId) => {
+    const categories = [
+      "All",
+      "Phones, Laptops & Accessories",
+      "Appliances",
+      "Clothes",
+      "Bags",
+      "Home & Kitchen",
+      "Shoes",
+    ];
+    return categories[categoryId] || "Uncategorized";
   };
 
   return (
@@ -146,7 +197,9 @@ function Products() {
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
+                    cursor: "pointer",
                   }}
+                  onClick={() => handleProductClick(item)}
                 >
                   <Box
                     sx={{
@@ -199,6 +252,7 @@ function Products() {
                       mt: "auto",
                       justifyContent: "space-between",
                     }}
+                    onClick={(e) => e.stopPropagation()}
                   >
                     <Box>
                       <IconButton
@@ -246,6 +300,170 @@ function Products() {
           </Grid>
         )}
       </Box>
+      {/* Swipeable Drawer for Product Details */}
+      <SwipeableDrawer
+        anchor="bottom"
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+        disableSwipeToOpen={false}
+        swipeAreaWidth={56}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        BackdropProps={{
+          onClick: toggleDrawer(false),
+        }}
+        sx={{
+          "& .MuiDrawer-paper": {
+            borderTopLeftRadius: 16,
+            borderTopRightRadius: 16,
+            maxHeight: "90vh",
+          },
+        }}
+      >
+        <Box sx={{ padding: 2 }} onClick={toggleDrawer(false)}>
+          <Puller />
+          {selectedProduct && (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 2,
+                }}
+              >
+                <Typography variant="h6" fontWeight={600}>
+                  Product Details
+                </Typography>
+                <IconButton onClick={toggleDrawer(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  gap: 3,
+                  mb: 3,
+                }}
+              >
+                <Box
+                  sx={{
+                    flex: { sm: "0 0 40%" },
+                    bgcolor: "#F1F3F4",
+                    borderRadius: 2,
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      width: "100%",
+                      borderRadius: 2,
+                      height: { xs: "200px", sm: "250px" },
+                      objectFit: "cover",
+                    }}
+                    image={
+                      selectedProduct.images ||
+                      selectedProduct.image ||
+                      "/src/assets/jersey.jpg"
+                    }
+                    alt={selectedProduct.title || selectedProduct.name}
+                  />
+                </Box>
+
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="h5" fontWeight={600} gutterBottom>
+                    {selectedProduct.name}
+                  </Typography>
+
+                  <Chip
+                    label={getCategoryName(selectedProduct.category)}
+                    size="small"
+                    sx={{ mb: 2 }}
+                    color="primary"
+                    variant="outlined"
+                  />
+
+                  <Typography
+                    variant="h4"
+                    fontWeight={700}
+                    color="primary.main"
+                    sx={{ mb: 2 }}
+                  >
+                    KSh {selectedProduct.price}
+                  </Typography>
+
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 2 }}
+                  >
+                    {selectedProduct.description ||
+                      "This product is currently available for purchase. Contact the seller for more details about specifications, delivery options, and warranty information."}
+                  </Typography>
+
+                  <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+                    <Chip
+                      icon={<LocalShippingIcon />}
+                      label="Free Delivery"
+                      variant="outlined"
+                      size="small"
+                    />
+                    <Chip
+                      label="In Stock"
+                      color="success"
+                      size="small"
+                      variant="outlined"
+                    />
+                  </Box>
+                </Box>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              <List>
+                <ListItem>
+                  <ListItemText
+                    primary="Seller"
+                    secondary={selectedProduct.seller || "Official Store"}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="Location"
+                    secondary={selectedProduct.location || "Nairobi, Kenya"}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="Condition"
+                    secondary={selectedProduct.condition || "New"}
+                  />
+                </ListItem>
+              </List>
+
+              <Box sx={{ display: "flex", gap: 2, mt: 3 }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<WhatsAppIcon />}
+                  onClick={() =>
+                    window.open(
+                      `https://wa.me/${selectedProduct.phoneNumber || "254712345678"}`,
+                      "_blank"
+                    )
+                  }
+                  fullWidth
+                >
+                  Contact Seller
+                </Button>
+              </Box>
+            </>
+          )}
+        </Box>
+      </SwipeableDrawer>
       <SimpleBottomNavigation />
     </Box>
   );
