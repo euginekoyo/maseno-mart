@@ -16,6 +16,7 @@ import ListService from "./Pages/Admin/AdminComponents/listService/ListService";
 import AdminRoute from "./components/AdminRoute"; // ✅ Import protected route
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import Profile from "./Pages/Profile.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
           { path: "/", element: <Dashboard /> },
           { path: "products", element: <Products /> },
           { path: "services", element: <Services /> },
+          { path: "profile", element: <Profile /> },
           { path: "404", element: <Page404 /> },
         ],
       },

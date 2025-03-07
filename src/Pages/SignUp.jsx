@@ -4,13 +4,15 @@ import { signupUser } from "../api/api";
 import Swal from "sweetalert2";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Link } from "react-router-dom";
-
+import { CardMedia, Box } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 function SignUp() {
   const [formData, setFormData] = useState({
-    userName: "",
+    name: "",
     email: "",
     password: "",
-    userRole: "",
+    role: "",
   });
 
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -28,7 +30,8 @@ function SignUp() {
     e.preventDefault();
     try {
       const response = await signupUser(formData);
-      if (response.status === 200) {
+      console.log(response.data)
+      if (response.status == 200) {
         navigate("/", {
           state: {
             message: `Welcome To Maseno-Mart`,
@@ -53,20 +56,37 @@ function SignUp() {
 
   return (
     <div className="container d-flex justify-content-center align-items-center min-vh-100">
-      <div className="card shadow-lg p-4" style={{ width: "400px", borderRadius: "15px" }}>
-        <div className="d-flex justify-content-center mb-4">
-          <h4>Maseno-Mart</h4>
+      <div
+        className="card shadow-lg p-4"
+        style={{ width: "400px", borderRadius: "15px" }}
+      >
+        <div className="d-flex justify-content-center ">
+          <Box mx={"auto"}>
+            <CardMedia
+              component="img"
+              sx={{
+                width: "100%",
+                borderRadius: "8px 8px 0 0",
+                height: { lg: "200px", xs: "80px" },
+                objectFit: "cover",
+              }}
+              image={"/src/assets/logo.png"}
+              alt={"maseno mart"}
+            />
+          </Box>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="userName" className="form-label">Username</label>
+            <label htmlFor="userName" className="form-label">
+              Username
+            </label>
             <input
               type="text"
               className="form-control"
               id="userName"
-              name="userName"
-              value={formData.userName}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               required
               aria-label="Enter your username"
@@ -74,7 +94,9 @@ function SignUp() {
           </div>
 
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email</label>
+            <label htmlFor="email" className="form-label">
+              Email
+            </label>
             <input
               type="email"
               className="form-control"
@@ -88,8 +110,10 @@ function SignUp() {
           </div>
 
           <div className="mb-3 position-relative">
-            <label htmlFor="password" className="form-label">Password</label>
-            <div className="d-flex">
+            <label htmlFor="password" className="form-label">
+              Password
+            </label>
+            <div className="position-relative">
               <input
                 type={passwordVisible ? "text" : "password"}
                 className="form-control"
@@ -99,13 +123,18 @@ function SignUp() {
                 onChange={handleChange}
                 required
                 aria-label="Enter your password"
+                style={{ paddingRight: "40px" }} // Add padding to prevent text overlap
               />
               <button
                 type="button"
-                className="btn btn-link p-0 ms-2"
+                className="btn btn-link p-0"
                 onClick={togglePasswordVisibility}
                 aria-label="Toggle Password Visibility"
                 style={{
+                  position: "absolute",
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
                   background: "none",
                   border: "none",
                   color: "#007bff",
@@ -113,17 +142,18 @@ function SignUp() {
                   fontSize: "1rem",
                 }}
               >
-                {passwordVisible ? "Hide" : "Show"}
+                {passwordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
               </button>
             </div>
           </div>
-
           <div className="mb-3">
-            <label htmlFor="userRole" className="form-label">Role</label>
+            <label htmlFor="userRole" className="form-label">
+              Role
+            </label>
             <select
-              name="userRole"
+              name="role"
               className="form-select"
-              value={formData.userRole}
+              value={formData.role}
               onChange={handleChange}
               required
               aria-label="Select your role"
@@ -134,13 +164,17 @@ function SignUp() {
             </select>
           </div>
 
-          <button type="submit" className="btn btn-dark w-100">Register</button>
+          <button type="submit" className="btn btn-dark w-100">
+            Register
+          </button>
         </form>
 
         <div className="text-center mt-3">
           <p>
             Already have an account?{" "}
-            <Link to="/login" className="text-decoration-underline">Login</Link>
+            <Link to="/login" className="text-decoration-underline">
+              Login
+            </Link>
           </p>
         </div>
 

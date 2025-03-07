@@ -10,7 +10,7 @@ const AdminRoute = () => {
 
   if (!token || role !== "admin") {
     console.warn("🚨 Unauthorized! Redirecting to login.");
-    return <Navigate to="/" />;
+    return <Navigate to="/dash" />;
   }
 
   return <Outlet />;
