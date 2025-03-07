@@ -2,7 +2,6 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import {
   Grid,
-  Card,
   CardMedia,
   CardContent,
   CardActions,
@@ -35,28 +34,30 @@ const ExpandMore = styled(IconButton)(({ theme, expand }) => ({
 function Products() {
   const [value, setValue] = React.useState(0);
   const [products, setProducts] = React.useState([]);
+  const [filteredProducts, setFilteredProducts] = React.useState([]);
   const [expandedItemId, setExpandedItemId] = React.useState(null);
 
   React.useEffect(() => {
     const getData = async () => {
       try {
         const productResponse = await fetchProducts();
-        console.log("Response:", productResponse); // Debugging output
-
-        // Ensure response is in expected format
         if (Array.isArray(productResponse.data)) {
           setProducts(productResponse.data);
+          setFilteredProducts(productResponse.data);
         } else if (
           productResponse.data &&
           Array.isArray(productResponse.data.products)
         ) {
           setProducts(productResponse.data.products);
+          setFilteredProducts(productResponse.data.products);
         } else {
-          setProducts([]); // Fallback to empty array
+          setProducts([]);
+          setFilteredProducts([]);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        setProducts([]); // Ensure it's always an array
+        setProducts([]);
+        setFilteredProducts([]);
       }
     };
 
@@ -67,22 +68,25 @@ function Products() {
     setExpandedItemId(expandedItemId === id ? null : id);
   };
 
-  // If no products, show "No product available" message
-  if (products.length === 0) {
-    return (
-      <Grid item xs={12}>
-        <Typography variant="h6" color="textSecondary" align="center">
-          No product available
-        </Typography>
-      </Grid>
-    );
-  }
+  const handleTabChange = (event, newValue) => {
+    setValue(newValue);
+    if (newValue === 0) {
+      setFilteredProducts(products);
+    } else {
+      const categories = ["All", "1", "2", "3", "4", "5","6"];
+      const selectedCategory = categories[newValue];
+      setFilteredProducts(
+        products.filter((product) => product.category === selectedCategory)
+      );
+    }
+  };
 
   return (
-    <Box>
+    <Box sx={{ paddingBottom: "80px" }}>
+      {" "}
+      {/* Prevent overlap with footer */}
       <Box my={4}>
         <Box
-          // component="section"
           sx={{
             width: { xs: "100%", sm: "80%", lg: "40%" },
             mx: { lg: 45, md: 30 },
@@ -91,219 +95,158 @@ function Products() {
         >
           <Tabs
             value={value}
-            onChange={(event, newValue) => setValue(newValue)}
+            onChange={handleTabChange}
             variant="scrollable"
             scrollButtons="auto"
-            allowScrollButtonsMobile
             indicatorColor="primary"
             textColor="primary"
             sx={{
               "& .MuiTab-root": {
-                fontSize: "13px", // Slightly smaller
-                fontWeight: "500", // Medium weight
+                fontSize: "13px",
+                fontWeight: "500",
                 textTransform: "none",
-                minWidth: "auto", // Removes extra width
-                padding: "6px 12px", // Reduces inner spacing
+                minWidth: "auto",
+                padding: "6px 12px",
               },
               "& .MuiTabs-flexContainer": {
-                gap: "4px", // Reduces space between tabs
+                gap: "4px",
               },
             }}
           >
             <Tab label="All" />
-            <Tab label="Electronics" />
-            <Tab label="Shoes" />
-            <Tab label="Cyber Services" />
-            <Tab label="Clothes" />
+            <Tab label="Phones, Laptops & Accessories" />
             <Tab label="Appliances" />
+            <Tab label="Clothes" />
+            <Tab label="Bags" />
+            <Tab label="Home & Kitchen" />
+            <Tab label="Shoes" />
           </Tabs>
         </Box>
       </Box>
       <Box mx={2}>
-        <Grid container spacing={2}>
-          {products.map((item) => (
-            <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
-              <Box
-                sx={{
-                  maxWidth: 350,
-                  mx: "auto",
-                  borderRadius: 2,
-                  position: "relative",
-                  flex: "0 0 auto",
-                  backgroundColor: "background.main",
-                  mb: 2,
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
+        {filteredProducts.length === 0 ? (
+          <Grid item xs={12}>
+            <Typography variant="h6" color="textSecondary" align="center">
+              No products available
+            </Typography>
+          </Grid>
+        ) : (
+          <Grid container spacing={2}>
+            {filteredProducts.map((item) => (
+              <Grid item xs={6} sm={6} md={4} lg={3} key={item._id}>
                 <Box
                   sx={{
+                    maxWidth: 350,
+                    mx: "auto",
+                    borderRadius: 2,
                     position: "relative",
                     flex: "0 0 auto",
-                    bgcolor: "#F1F3F4",
-                    borderRadius: 2,
+                    backgroundColor: "background.main",
+                    mb: 2,
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
                   }}
-                >
-                  <CardMedia
-                    component="img"
-                    sx={{
-                      width: "100%",
-                      borderRadius: 2,
-                      height: { lg: "200px", xs: "150px" },
-                      objectFit: "cover",
-                    }}
-                    image={
-                      item.images || item.image || "/src/assets/jersey.jpg"
-                    }
-                    alt={item.title || item.name}
-                  />
-                </Box>
-                <CardContent sx={{ padding: "5px 10px", flex: "1 0 auto" }}>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
-                      overflow: "hidden",
-                      height: 40,
-                    }}
-                  >
-                    {item.name} - {"Service Available"}
-                  </Typography>
-                  <Typography
-                    variant="h6"
-                    fontWeight={600}
-                    sx={{ mt: 1, color: "primary.main" }}
-                  >
-                    KSh {item.price}
-                  </Typography>
-                </CardContent>
-                <CardActions
-                  disableSpacing
-                  sx={{
-                    padding: "8px 11px",
-                    mt: "auto",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>
-                    <IconButton
-                      aria-label="add to favorites"
-                      color="primary"
-                      size="small"
-                    >
-                      <FavoriteIcon />
-                    </IconButton>
-                    <IconButton aria-label="share" color="primary" size="small">
-                      <ShareIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="whatsapp"
-                      color="primary"
-                      size="small"
-                      onClick={() =>
-                        window.open(
-                          `https://wa.me/${item.phoneNumber || "254712345678"}`,
-                          "_blank"
-                        )
-                      }
-                    >
-                      <WhatsAppIcon />
-                    </IconButton>
-                  </Box>
-                  <ExpandMore
-                    expand={expandedItemId === item._id}
-                    onClick={() => handleExpandClick(item._id)}
-                    aria-expanded={expandedItemId === item._id}
-                    aria-label="show more"
-                    color="primary"
-                    size="small"
-                  >
-                    <ExpandMoreIcon />
-                  </ExpandMore>
-                </CardActions>
-                <Dialog
-                  open={expandedItemId === item._id}
-                  onClose={() => handleExpandClick(item._id)}
-                  maxWidth="sm"
-                  fullWidth
                 >
                   <Box
                     sx={{
-                      p: 3,
-                      borderRadius: 3,
-                      bgcolor: "background.paper",
                       position: "relative",
+                      flex: "0 0 auto",
+                      bgcolor: "#F1F3F4",
+                      borderRadius: 2,
                     }}
                   >
-                    <IconButton
-                      onClick={() => handleExpandClick(item._id)}
-                      sx={{ position: "absolute", right: 8, top: 8 }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                    <Typography paragraph sx={{ pl: 2, fontWeight: "bold" }}>
-                      Details:
-                    </Typography>
-                    <Box
+                    <CardMedia
+                      component="img"
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 2,
-                        pl: 2,
+                        width: "100%",
+                        borderRadius: 2,
+                        height: { lg: "200px", xs: "150px" },
+                        objectFit: "cover",
                       }}
-                    >
-                      <Avatar sx={{ bgcolor: red[600], width: 40, height: 40 }}>
-                        {item.title[0]?.toUpperCase()}
-                      </Avatar>
-                      <Box>
-                        <Typography variant="subtitle1" fontWeight={600}>
-                          {item.title}
-                        </Typography>
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            fontSize: "0.8rem",
-                            color: "text.secondary",
-                          }}
-                        >
-                          {new Date().toDateString()}
-                        </Typography>
-                      </Box>
-                    </Box>
-                    <Typography paragraph sx={{ pl: 2, mt: 2 }}>
-                      {item.description || "No description available."}
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      startIcon={<WhatsAppIcon />}
-                      sx={{
-                        mt: 2,
-                        display: "flex",
-                        justifyContent: "center",
-                        mx: "auto",
-                      }}
-                      onClick={() =>
-                        window.open(
-                          `https://wa.me/${item.phoneNumber || "254712345678"}`,
-                          "_blank"
-                        )
+                      image={
+                        item.images || item.image || "/src/assets/jersey.jpg"
                       }
-                    >
-                      Contact me
-                    </Button>
+                      alt={item.title || item.name}
+                    />
                   </Box>
-                </Dialog>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-        <SimpleBottomNavigation />
+                  <CardContent sx={{ padding: "5px 10px", flex: "1 0 auto" }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        height: 40,
+                      }}
+                    >
+                      {item.name} - {"Service Available"}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      fontWeight={600}
+                      sx={{ mt: 1, color: "primary.main" }}
+                    >
+                      KSh {item.price}
+                    </Typography>
+                  </CardContent>
+                  <CardActions
+                    disableSpacing
+                    sx={{
+                      padding: "8px 11px",
+                      mt: "auto",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Box>
+                      <IconButton
+                        aria-label="add to favorites"
+                        color="primary"
+                        size="small"
+                      >
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="share"
+                        color="primary"
+                        size="small"
+                      >
+                        <ShareIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="whatsapp"
+                        color="primary"
+                        size="small"
+                        onClick={() =>
+                          window.open(
+                            `https://wa.me/${item.phoneNumber || "254712345678"}`,
+                            "_blank"
+                          )
+                        }
+                      >
+                        <WhatsAppIcon />
+                      </IconButton>
+                    </Box>
+                    <ExpandMore
+                      expand={expandedItemId === item._id}
+                      onClick={() => handleExpandClick(item._id)}
+                      aria-expanded={expandedItemId === item._id}
+                      aria-label="show more"
+                      color="primary"
+                      size="small"
+                    >
+                      <ExpandMoreIcon />
+                    </ExpandMore>
+                  </CardActions>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
+      <SimpleBottomNavigation />
     </Box>
   );
 }

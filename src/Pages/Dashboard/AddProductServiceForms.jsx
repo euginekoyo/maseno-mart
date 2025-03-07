@@ -28,6 +28,16 @@ const mockCategories = [
   { _id: "5", name: "Home & Kitchen" },
   { _id: "6", name: "Shoes" },
 ];
+const mockCategories2 = [
+    { _id: "1", name: "Photography" },
+    { _id: "2", name: "Hair Design" },
+    { _id: "3", name: "Gaming" },
+    { _id: "4", name: "Bike Hire" },
+    { _id: "5", name: "Cyber Services" },
+    { _id: "6", name: "Fast Foods" },
+
+  ];
+  
 
 const modalStyle = {
   position: "absolute",
@@ -70,6 +80,7 @@ const AddProductServiceForms = ({
     name: "",
     description: "",
     price: "",
+    category: "",
     image: null,
   });
 
@@ -89,6 +100,7 @@ const AddProductServiceForms = ({
       name: "",
       description: "",
       price: "",
+      category: "",
       image: null,
     });
     setFormErrors({});
@@ -249,9 +261,9 @@ const AddProductServiceForms = ({
             bgcolor: "background.paper",
             position: "absolute",
             top: "30%",
-            left:{xs:"49%"},
-            px:4 ,
-            mx:1,
+            left: { xs: "49%" },
+            px: 4,
+            mx: 1,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -268,14 +280,14 @@ const AddProductServiceForms = ({
           <Stack direction={"row"} my={3} spacing={2}>
             <Button
               variant="contained"
-              sx={{ bgcolor: "#EA4335", mr: 2 ,borderRadius:4}}
+              sx={{ bgcolor: "#EA4335", mr: 2, borderRadius: 4 }}
               onClick={() => handleOpenFormModal("product")}
             >
               Add Product
             </Button>
             <Button
               variant="contained"
-              sx={{ bgcolor: "#EA4335" ,borderRadius:4}}
+              sx={{ bgcolor: "#EA4335", borderRadius: 4 }}
               onClick={() => handleOpenFormModal("service")}
             >
               Add Service
@@ -289,12 +301,11 @@ const AddProductServiceForms = ({
         <Box
           sx={{ ...modalStyle, maxWidth: "800px", bgcolor: "background.paper" }}
         >
-          <Typography variant="h6"  sx={{ mb: 2 ,mx:{xs:11},my:4}}>
+          <Typography variant="h6" sx={{ mb: 2, mx: { xs: 11 }, my: 4 }}>
             Add New Product
           </Typography>
-          <Stack direction={"row"}  spacing={2}>
+          <Stack direction={"row"} spacing={2}>
             <TextField
-            
               fullWidth
               size="small"
               label="Title"
@@ -409,7 +420,7 @@ const AddProductServiceForms = ({
               component="label"
               fullWidth
               size="small"
-              sx={{ mb: 2, bgcolor:"#EA4335"}}
+              sx={{ mb: 2, bgcolor: "#EA4335" }}
               error={!!formErrors.thumbnail}
             >
               Upload Thumbnail
@@ -426,8 +437,7 @@ const AddProductServiceForms = ({
               variant="contained"
               component="label"
               fullWidth
-              
-              sx={{ mb: 2, bgcolor:"#EA4335"}}
+              sx={{ mb: 2, bgcolor: "#EA4335" }}
               error={!!formErrors.images}
             >
               Upload Images
@@ -444,13 +454,15 @@ const AddProductServiceForms = ({
 
           <Button
             variant="contained"
-            sx={{bgcolor:"#F1F3F4",width:300,mx:4,my:2}}
+            sx={{ bgcolor: "#F1F3F4", width: 300, mx: 4, my: 2 }}
             fullWidth
             onClick={handleProductSubmit}
             disabled={loading}
             startIcon={loading ? <CircularProgress size={20} /> : null}
           >
-            <Typography fontSize={"1rem"} mx={2}>Post</Typography>
+            <Typography fontSize={"1rem"} mx={2}>
+              Post
+            </Typography>
             <StickyNote />
           </Button>
         </Box>
@@ -458,8 +470,10 @@ const AddProductServiceForms = ({
 
       {/* Service Modal */}
       <Modal open={serviceModalOpen} onClose={handleCloseServiceModal}>
-        <Box sx={{ ...modalStyle,bgcolor:"background.paper", maxWidth: "800px" }}>
-          <Typography variant="h6" sx={{ mb: 2 ,mx:13,my:2 }}>
+        <Box
+          sx={{ ...modalStyle, bgcolor: "background.paper", maxWidth: "800px" }}
+        >
+          <Typography variant="h6" sx={{ mb: 2, mx: 13, my: 2 }}>
             New Service
           </Typography>
           <Grid
@@ -467,8 +481,7 @@ const AddProductServiceForms = ({
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            <Grid item xs={6}  >
-
+            <Grid item xs={6}>
               <TextField
                 fullWidth
                 size="small"
@@ -501,6 +514,27 @@ const AddProductServiceForms = ({
             <Grid item xs={6}>
               <TextField
                 fullWidth
+                select
+                label="Category"
+                size="small"
+                name="category"
+                value={serviceFormData.category}
+                onChange={handleServiceChange}
+                sx={{ mb: 2 }}
+                error={!!formErrors.category}
+                helperText={formErrors.category}
+                required
+              >
+                {mockCategories2.map((cat) => (
+                  <MenuItem key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
                 label="Price"
                 name="price"
                 type="number"
@@ -519,7 +553,7 @@ const AddProductServiceForms = ({
                 component="label"
                 fullWidth
                 size="small"
-                sx={{ mb: 2, bgcolor:"#EA4335" ,borderRadius:4  }}
+                sx={{ mb: 2, bgcolor: "#EA4335", borderRadius: 4 }}
                 error={!!formErrors.image}
               >
                 Upload Image
@@ -538,7 +572,13 @@ const AddProductServiceForms = ({
                 color="primary"
                 fullWidth
                 size="small"
-                sx={{width:200,mx:{xs:11},borderRadius:4,my:2,bgcolor:"#EA4335"}}
+                sx={{
+                  width: 200,
+                  mx: { xs: 11 },
+                  borderRadius: 4,
+                  my: 2,
+                  bgcolor: "#EA4335",
+                }}
                 onClick={handleServiceSubmit}
                 disabled={loading}
                 startIcon={loading ? <CircularProgress size={20} /> : null}

@@ -113,6 +113,12 @@ export const updateService = (serviceId, serviceData) =>
   api.put(`/services/${serviceId}`, serviceData);
 export const deleteService = (serviceId) =>
   api.delete(`/services/${serviceId}`);
+// Fetch products with optional search query
+export const searchProducts = (searchQuery = "") =>
+  api.get(`/products`, { params: { search: searchQuery } });
 
+// Fetch services with optional search query
+export const searchServices = (searchQuery = "") =>
+  api.get(`/services`, { params: { search: searchQuery } });
 export { setAuthToken };
 export default api;
