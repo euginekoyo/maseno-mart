@@ -104,7 +104,6 @@ function Services() {
             }));
           }
         }
-        console.log("Extracted Services:", extractedServices);
         setServices(extractedServices);
         setFilteredServices(extractedServices);
       } catch (error) {
