@@ -27,14 +27,13 @@ const Root = styled("div")(({ theme }) => ({
     theme.palette.mode === "light" ? "#fff" : theme.palette.background.default,
 }));
 
-const StyledBox = styled("div")(({ theme }) => ({
+const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-  height:10
 }));
 
 const Puller = styled("div")(({ theme }) => ({
   width: 30,
-  height: 20,
+  height: 6,
   backgroundColor: theme.palette.grey[300],
   borderRadius: 3,
   position: "absolute",
@@ -59,7 +58,7 @@ const ProductCard = ({ item, type = "product" }) => {
   };
 
   return (
-    <motion.div whileHover={{ scale: 1.1 }}>
+    <motion.div whileHover={{ scale: 1.05 }}>
       <Box
         onClick={handleExpandClick} // Open drawer when clicking the card
         sx={{
@@ -68,8 +67,9 @@ const ProductCard = ({ item, type = "product" }) => {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          backgroundColor: "background.main",
+          backgroundColor: "background.paper",
           cursor: "pointer",
+          boxShadow: 1,
         }}
       >
         <Box
@@ -77,14 +77,14 @@ const ProductCard = ({ item, type = "product" }) => {
             position: "relative",
             flex: "0 0 auto",
             bgcolor: "#F1F3F4",
-            borderRadius: 2,
+            borderRadius: "8px 8px 0 0",
           }}
         >
           <CardMedia
             component="img"
             sx={{
               width: "100%",
-              borderRadius: 2,
+              borderRadius: "8px 8px 0 0",
               height: { lg: "200px", xs: "150px" },
               objectFit: "cover",
             }}
@@ -92,11 +92,18 @@ const ProductCard = ({ item, type = "product" }) => {
             alt={item.title || item.name}
           />
         </Box>
-        <CardContent sx={{ padding: "5px 10px", flex: "1 0 auto" }}>
+        <CardContent sx={{ padding: "8px 12px", flex: "1 0 auto" }}>
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{ height: 40, overflow: "hidden" }}
+            sx={{
+              height: 40,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+            }}
           >
             {item.title || item.name} -{" "}
             {type === "product" ? "Free Delivery" : "Service Available"}
@@ -112,7 +119,7 @@ const ProductCard = ({ item, type = "product" }) => {
         <CardActions
           disableSpacing
           sx={{
-            padding: "8px 11px",
+            padding: "8px 12px",
             mt: "auto",
             justifyContent: "space-between",
           }}
@@ -122,6 +129,7 @@ const ProductCard = ({ item, type = "product" }) => {
               onClick={(event) => event.stopPropagation()}
               color="primary"
               size="small"
+              aria-label="add to favorites"
             >
               <FavoriteIcon />
             </IconButton>
@@ -129,6 +137,7 @@ const ProductCard = ({ item, type = "product" }) => {
               onClick={(event) => event.stopPropagation()}
               color="primary"
               size="small"
+              aria-label="share"
             >
               <ShareIcon />
             </IconButton>
@@ -136,125 +145,166 @@ const ProductCard = ({ item, type = "product" }) => {
               onClick={handleWhatsAppClick}
               color="primary"
               size="small"
+              aria-label="contact on WhatsApp"
             >
               <WhatsAppIcon />
             </IconButton>
           </Box>
-          <IconButton onClick={handleExpandClick} color="primary" size="small">
+          <IconButton
+            onClick={handleExpandClick}
+            color="primary"
+            size="small"
+            aria-expanded={isExpanded}
+            aria-label="show more"
+          >
             <ExpandMoreIcon />
           </IconButton>
         </CardActions>
 
         {/* Swipeable Drawer */}
-        <Root>
-          <CssBaseline />
-          <SwipeableDrawer
-            anchor="bottom"
-            open={isExpanded}
-            onClose={handleExpandClick}
-            onOpen={handleExpandClick}
-            swipeAreaWidth={drawerBleeding}
-            disableSwipeToOpen={false}
-            keepMounted
+        <SwipeableDrawer
+          anchor="bottom"
+          open={isExpanded}
+          onClose={() => setIsExpanded(false)}
+          onOpen={() => setIsExpanded(true)}
+          swipeAreaWidth={drawerBleeding}
+          disableSwipeToOpen={false}
+          ModalProps={{
+            keepMounted: true,
+          }}
+          sx={{
+            "& .MuiDrawer-paper": {
+              height: { xs: "80%", sm: "70%", md: "60%" },
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+            },
+          }}
+        >
+          <StyledBox
+            sx={{
+              position: "absolute",
+              top: -drawerBleeding,
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              visibility: "visible",
+              right: 0,
+              left: 0,
+              height: drawerBleeding,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
-            <StyledBox
-              sx={{
-                position: "absolute",
-                top: -drawerBleeding,
-                borderTopLeftRadius: 8,
-                borderTopRightRadius: 8,
-              }}
+            <Puller />
+          </StyledBox>
+          <StyledBox
+            sx={{
+              px: 2,
+              pb: 2,
+              pt: 2,
+              height: "100%",
+              overflow: "auto",
+            }}
+          >
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              spacing={3}
+              sx={{ mt: 1 }}
             >
-              <Puller />
-            </StyledBox>
-            <StyledBox sx={{ px: 2, height: "100%", overflow: "auto" }}>
-              <Box
+              <Card
                 sx={{
-                  alignItems: "center",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
+                  borderRadius: 2,
+                  width: { xs: "100%", md: "40%" },
+                  alignSelf: "flex-start",
                 }}
               >
-                <Stack direction={{ lg: "row", xs: "column",mt:{lg:3} }} spacing={2}>
-                  <Card sx={{ my: 2, borderRadius: 2, ml: { lg: -10 } }}>
-                    <CardMedia
-                      component="img"
-                      sx={{
-                        width: "100%",
-                        borderRadius: 2,
-                        height: { lg: "300px", xs: "70%" },
-                        objectFit: "cover",
-                      }}
-                      image={
-                        item.images || item.image || "/src/assets/jersey.jpg"
-                      }
-                      alt={item.title || item.name}
-                    />
-                  </Card>
-                  <Box sx={{ width: "100%", height: "100%" }}>
-                    <Box
-                      sx={{
-                        borderRadius: 4,
-                        boxShadow: 6,
-                        my: { xs: -15, lg: -4 },
+                <CardMedia
+                  component="img"
+                  sx={{
+                    width: "100%",
+                    borderRadius: 2,
+                    height: { xs: "250px", md: "300px" },
+                    objectFit: "cover",
+                  }}
+                  image={item.images || item.image || "/src/assets/jersey.jpg"}
+                  alt={item.title || item.name}
+                />
+              </Card>
 
-                        backgroundColor: "background.paper",
-                        mb: 3,
-                      }}
-                    >
-                      <Stack direction="row" sx={{ mx: 0.5 }} spacing={7}>
-                        <Box sx={{ display: "flex", flexDirection: "row" }}>
-                          <Typography my={2} mx={1}>
-                            {item.title || item.name}
-                          </Typography>
-                          <IconButton
-                            sx={{
-                              bgcolor: "green",
-                              borderRadius: 2,
-                              my: 1,
-                              width: 70,
-                              height: 20,
-                              fontSize: ".7rem",
-                            }}
-                          >
-                            in stock
-                          </IconButton>
-                        </Box>
-                        <Box>
-                          <Button
-                            variant="contained"
-                            color="success"
-                            startIcon={<WhatsAppIcon />}
-                            sx={{ mb: 6, mt: 1.5, width: 130 }}
-                            onClick={handleWhatsAppClick}
-                          >
-                            <Typography fontSize="0.6rem">
-                              Contact me
-                            </Typography>
-                          </Button>
-                        </Box>
-                      </Stack>
-                      <Typography
-                        variant="caption"
+              <Box sx={{ width: { xs: "100%", md: "60%" } }}>
+                <Card
+                  sx={{
+                    borderRadius: 2,
+                    boxShadow: 2,
+                    p: 2,
+                    mb: 2,
+                  }}
+                >
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    sx={{ mb: 2 }}
+                  >
+                    <Box>
+                      <Typography variant="h6" fontWeight="bold">
+                        {item.title || item.name}
+                      </Typography>
+                      <Box
                         sx={{
-                          fontSize: "0.8rem",
-                          color: "text.secondary",
-                          mx: 3,
+                          display: "inline-block",
+                          bgcolor: "success.main",
+                          color: "white",
+                          borderRadius: 1,
+                          px: 1,
+                          py: 0.5,
+                          mt: 1,
+                          fontSize: "0.75rem",
                         }}
                       >
-                        {new Date().toDateString()}
-                      </Typography>
-                      <Typography paragraph sx={{ pl: 2, mt: 2, pb: 4 }}>
-                        {item.description || "No description available."}
-                      </Typography>
+                        In Stock
+                      </Box>
                     </Box>
-                  </Box>
-                </Stack>
+
+                    <Button
+                      variant="contained"
+                      color="success"
+                      startIcon={<WhatsAppIcon />}
+                      sx={{
+                        borderRadius: 2,
+                        textTransform: "none",
+                      }}
+                      onClick={handleWhatsAppClick}
+                    >
+                      Contact Me
+                    </Button>
+                  </Stack>
+
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ display: "block", mb: 2 }}
+                  >
+                    {new Date().toDateString()}
+                  </Typography>
+
+                  <Typography variant="body1" paragraph>
+                    {item.description || "No description available."}
+                  </Typography>
+
+                  <Typography
+                    variant="h6"
+                    color="primary.main"
+                    fontWeight="bold"
+                    sx={{ mt: 2 }}
+                  >
+                    KSh {item.price}
+                  </Typography>
+                </Card>
               </Box>
-            </StyledBox>
-          </SwipeableDrawer>
-        </Root>
+            </Stack>
+          </StyledBox>
+        </SwipeableDrawer>
       </Box>
     </motion.div>
   );
