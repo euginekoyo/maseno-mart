@@ -11,15 +11,18 @@ const api = axios.create({
 });
 
 // Function to set token in headers
-const setAuthToken = (token) => {
+const setAuthToken = (token, role = null) => {
   if (token) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    localStorage.setItem("token", token); // Store token
+    localStorage.setItem("token", token);
+    if (role) localStorage.setItem("role", role); // Store role
   } else {
     delete api.defaults.headers.common["Authorization"];
-    localStorage.removeItem("token"); // Remove token
+    localStorage.removeItem("token");
+    localStorage.removeItem("role"); // Remove role too
   }
 };
+
 
 // Retrieve token on app load
 const token = localStorage.getItem("token");
@@ -27,7 +30,7 @@ if (token) {
   setAuthToken(token);
 }
 
-// Auth APIs
+// ✅ Authentication APIs
 export const signupUser = async (userData) => {
   const response = await api.post("/auth/signup", userData);
   if (response.data.token) {
@@ -35,60 +38,48 @@ export const signupUser = async (userData) => {
   }
   return response;
 };
+
 export const loginUser = async (credentials) => {
-  const response = await api.post("/auth/login", credentials);
-  if (response.data.token) {
-    setAuthToken(response.data.token);
+  try {
+    const response = await api.post("/auth/login", credentials);
+    console.log("Login API Response:", response.data); // ✅ Debug response
+
+    if (response.data.token) {
+      setAuthToken(response.data.token);
+      console.log("User Role from API:", response.data.role); // ✅ Log role
+      localStorage.setItem("role", response.data.role); // ✅ Store role
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Login Error:", error.response?.data || error.message);
+    throw error;
   }
-  return response;
 };
+
+
 
 export const logoutUser = () => setAuthToken(null);
 
-// User APIs
+// ✅ User APIs
 export const fetchUsers = () => api.get("/users");
 export const updateUser = (userId, userData) =>
   api.put(`/users/${userId}`, userData);
 export const deleteUser = (userId) => api.delete(`/users/${userId}`);
 
-// Product APIs
+// ✅ Product APIs (Client)
 export const fetchProducts = () => api.get("/products");
-
-// Updated createProduct function with file upload
-export const createProduct = async (formData) => {
-  try {
-    // Log FormData contents for debugging
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
-
-    const response = await api.post("/products", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error("API Error:", {
-      response: error.response?.data,
-      message: error.message,
-      status: error.response?.status,
-    });
-    throw error;
-  }
-};
-
+export const createProduct = (productData) =>
+  api.post("/products", productData);
 export const updateProduct = (productId, productData) =>
-  api.put(`/${productId}`, productData);
+  api.put(`/products/${productId}`, productData);
 export const deleteProduct = (productId) =>
-  api.delete(`/${productId}`);
+  api.delete(`/products/${productId}`);
 
-// Service APIs
+// ✅ Service APIs
 export const fetchServices = () => api.get("/services");
 export const createService = async (formData) => {
   try {
-    // Log FormData contents for debugging
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
@@ -117,8 +108,49 @@ export const deleteService = (serviceId) =>
 export const searchProducts = (searchQuery = "") =>
   api.get(`/products`, { params: { search: searchQuery } });
 
-// Fetch services with optional search query
-export const searchServices = (searchQuery = "") =>
-  api.get(`/services`, { params: { search: searchQuery } });
+// ✅ Admin-Specific Product APIs
+// Admin-Specific Product APIs
+
+// Fetch products with image handling
+export const adminFetchProducts = async () => {
+  try {
+    const response = await api.get("/admin/products");
+    
+    // Assuming product images are stored in a 'thumbnail' or 'images' field in your product data
+    const products = response.data.products.map(product => {
+      return {
+        ...product,
+        thumbnail: `${BASE_URL}/uploads/${product.thumbnail}`, // Update image URL
+        images: product.images.map(image => `${BASE_URL}/uploads/${image}`) // Update images array URLs
+      };
+    });
+
+    return { ...response.data, products };
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
+
+// Create product (assuming image data will be handled via formData in frontend)
+export const adminCreateProduct = (productData) => 
+  api.post("/admin/products", productData);
+
+// Update product (assuming image data will be handled via formData in frontend)
+export const adminUpdateProduct = (productId, productData) =>
+  api.put(`/admin/products/${productId}`, productData);
+
+// Delete product
+export const adminDeleteProduct = (productId) =>
+  api.delete(`/admin/products/${productId}`);
+
+
+// ✅ Admin-Specific User Management APIs
+export const adminFetchUsers = () => api.get("/admin/users");
+export const adminUpdateUser = (userId, userData) =>
+  api.put(`/admin/users/${userId}`, userData);
+export const adminDeleteUser = (userId) =>
+  api.delete(`/admin/users/${userId}`);
+
 export { setAuthToken };
 export default api;
